@@ -9,6 +9,7 @@ export default function Administrador() {
   const [stockProduct, setStockProduct] = useState("");
   const [criticProduct, setCriticProduct] = useState("");
   const [descriptionProduct, setDescriptionProduct] = useState("");
+  const [nameDepartment, setNameDepartment] = useState("DESECHABLES");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +21,8 @@ export default function Administrador() {
       costPriceProduct,
       stockProduct,
       criticProduct,
-      descriptionProduct
+      descriptionProduct,
+      nameDepartment
     };
 
     fetch("http://localhost:8080/MyMDentalCommerce/products/saveProduct", {
