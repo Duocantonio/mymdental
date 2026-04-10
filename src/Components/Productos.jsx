@@ -1,24 +1,26 @@
 import React from 'react'
-import Inventario from '../assets/Imagenes/Inventario.json'
-
-const productos = Inventario.filter(i=> i.departamento=="HIGIENE BUCAL")
-
-
+import { useEffect, useState } from 'react'
 
 export default function Productos() {
-  return (
-    <div className="Card_group">
-      {productos.map(i => (
-        <div className="col-md-4" style={{ width: '15rem' }} key={i.id}>
-          <div className="card border border-black">            
-            <h5 >{i.codigo}</h5>
-            <p >{i.descripcion}</p>
-            <p >Stock: {i.stock}</p>
-            <a href="#" className="btn btn-primary">Detalles</a>
-          </div>
-        </div>
-      ))}
-    </div>
+  const [productos, setProductos] = useState([])
 
-  );
+
+useEffect(() => {
+    fetch("http://localhost:8080/MyMDentalCommerce/products/clientProducts")
+        .then(response => response.json())
+        .then(data => setProductos(data))
+        .catch(error => console.error(error))
+}, [])
+
+
+return (
+    <div>
+        <h1>Productos</h1>
+        <ul>
+            {productos.map((producto) => (
+                <li key={producto.id}>{producto.nombre} - ${producto.precio}</li>
+            ))}
+        </ul>
+    </div>
+)
 }
