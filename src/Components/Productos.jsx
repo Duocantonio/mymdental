@@ -10,17 +10,23 @@ useEffect(() => {
         .then(response => response.json())
         .then(data => setProductos(data))
         .catch(error => console.error(error))
+
 }, [])
 
 
 return (
-    <div>
-        <h1>Productos</h1>
-        <ul>
-            {productos.map((producto) => (
-                <li key={producto.id}>{producto.nombre} - ${producto.precio}</li>
-            ))}
-        </ul>
+  <div className="Card_group">
+      {productos.map(productos => (
+        <div className="col-md-4" style={{ width: '15rem' }} key={productos.idProduct}>
+          <div className="card border border-black">            
+            <h5 >{productos.productName}</h5>
+            <p >{productos.descriptionProduct}</p>
+            <p >Stock: {productos.stockProduct}</p>
+            <p >Precio: ${productos.priceProduct}</p>
+            <a href="#" className="btn btn-primary">Detalles</a>
+          </div>
+        </div>
+      ))}
     </div>
 )
 }
