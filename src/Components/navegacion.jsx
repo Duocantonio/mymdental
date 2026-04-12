@@ -58,7 +58,6 @@ export default function Navegacion() {
               <span className="nav-link" style={{ cursor: 'pointer' }}>
                 Categorías ▼
               </span>
-
               {mostrarMenu && (
                   <div className="mega-menu-content">
                     {categorias.map(categoria => (
@@ -71,7 +70,6 @@ export default function Navegacion() {
                   </div>
               )}
             </li>
-
           </ul>
         </div>
       </div>
