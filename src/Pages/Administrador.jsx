@@ -15,7 +15,7 @@ export default function Administrador() {
 
 
 
-  
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,14 +75,14 @@ export default function Administrador() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        NewcodeProduct,
-        NewproductName,
-        NewpriceProduct,
-        NewcostPriceProduct,
-        NewstockProduct,
-        NewcriticProduct,
-        NewdescriptionProduct,
-        NewnameDepartment
+        codeProduct,
+        productName,
+        priceProduct,
+        costPriceProduct,
+        stockProduct,
+        criticProduct,
+        descriptionProduct,
+        nameDepartment
       })
 
     })
@@ -106,7 +106,7 @@ export default function Administrador() {
         <input 
           type="text" 
           placeholder="Código del Producto" 
-          value={NewcodeProduct} 
+          value={codeProduct} 
           onChange={(e) => setCodeProduct(e.target.value)} 
           required 
         />
