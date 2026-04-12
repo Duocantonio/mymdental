@@ -9,7 +9,7 @@ export default function Administrador() {
   const [stockProduct, setStockProduct] = useState("");
   const [criticProduct, setCriticProduct] = useState("");
   const [descriptionProduct, setDescriptionProduct] = useState("");
-  const [nameDepartment, setNameDepartment] = useState("DESECHABLES");
+  const [nameDepartment, setNameDepartment] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,64 +45,96 @@ export default function Administrador() {
     });
   };
 
+  
+
+  const eliminarProducto = (e) => {
+    e.preventDefault();
+    fetch(`http://localhost:8080//MyMDentalCommerce/products/deleteProduct/${productName}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if(response.ok){
+        alert("Producto eliminado exitosamente");
+      } else {
+        alert("Error al eliminar el producto");
+      } 
+  })}
+
+
+
   return (
-    <form onSubmit={handleSubmit} className='form'>
+    <>
+      <form onSubmit={handleSubmit} className='form'>
+        
+        <input 
+          type="text" 
+          placeholder="Código del Producto" 
+          value={codeProduct} 
+          onChange={(e) => setCodeProduct(e.target.value)} 
+          required 
+        />
+        
+        <input 
+          type="text" 
+          placeholder="Nombre del producto" 
+          value={productName} 
+          onChange={(e) => setProductName(e.target.value)} 
+          required 
+        />
+        
+        <input 
+          type="number" 
+          placeholder="Precio de venta" 
+          value={priceProduct} 
+          onChange={(e) => setPriceProduct(e.target.value)} 
+          required 
+        />
       
-      <input 
-        type="text" 
-        placeholder="Código del Producto" 
-        value={codeProduct} 
-        onChange={(e) => setCodeProduct(e.target.value)} 
-        required 
-      />
-      
-      <input 
-        type="text" 
-        placeholder="Nombre del producto" 
-        value={productName} 
-        onChange={(e) => setProductName(e.target.value)} 
-        required 
-      />
-      
-      <input 
-        type="number" 
-        placeholder="Precio de venta" 
-        value={priceProduct} 
-        onChange={(e) => setPriceProduct(e.target.value)} 
-        required 
-      />
-      
-      <input 
-        type="number" 
-        placeholder="Precio de compra" 
-        value={costPriceProduct} 
-        onChange={(e) => setCostPriceProduct(e.target.value)} 
-        required 
-      />
-      
-      <input 
-        type="number" 
-        placeholder="Stock inicial" 
-        value={stockProduct} 
-        onChange={(e) => setStockProduct(e.target.value)} 
-        required 
-      />
+        <input 
+          type="number" 
+          placeholder="Precio de compra" 
+          value={costPriceProduct} 
+          onChange={(e) => setCostPriceProduct(e.target.value)} 
+          required 
+        />
+        
+        <input 
+          type="number" 
+          placeholder="Stock inicial" 
+          value={stockProduct} 
+          onChange={(e) => setStockProduct(e.target.value)} 
+          required 
+        />
 
-      <input 
-        type="number" 
-        placeholder="Stock crítico" 
-        value={criticProduct} 
-        onChange={(e) => setCriticProduct(e.target.value)} 
-      />
-
-      <textarea 
-        placeholder="Descripción" 
-        value={descriptionProduct} 
-        onChange={(e) => setDescriptionProduct(e.target.value)} 
-      />
-
-      <button type='submit' className='btn'>Registrar producto</button>
-
-    </form>
+        <input 
+          type="number" 
+          placeholder="Stock crítico" 
+          value={criticProduct} 
+          onChange={(e) => setCriticProduct(e.target.value)} 
+        />
+        <input
+        type='text'
+        placeholder='indique la categoria'
+        value={nameDepartment}
+        onChange={(e) => setNameDepartment(e.target.value)}
+        />
+        <textarea 
+          placeholder="Descripción" 
+          value={descriptionProduct} 
+          onChange={(e) => setDescriptionProduct(e.target.value)} 
+        />
+        <button type='submit' className='btn'>Registrar producto</button>
+      </form>
+      <form onSubmit={eliminarProducto} className='form'>
+        <input 
+          type="text"
+          placeholder="Nombre del producto a eliminar"
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
+          required
+        />
+        <button type='submit' className='btn'>Eliminar producto</button>
+      </form>
+    </>
   );
 }

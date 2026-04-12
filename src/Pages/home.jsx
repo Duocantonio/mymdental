@@ -7,6 +7,8 @@ import "../Styles/HomeStyle.css";
 
 
 export default function Home() {
+    const urlBack = "http://localhost:8080/MyMDentalCommerce/products/adminProducts";
+
     return (
         <>
         <h1>Bienvenido a MYM DENTAL</h1>
@@ -51,7 +53,8 @@ export default function Home() {
             </div>
         </div>
 
-        <Productos/>
+        <Productos urlBack={urlBack} />
+
     </>
     );
 

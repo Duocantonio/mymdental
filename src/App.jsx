@@ -4,6 +4,7 @@ import Home from './Pages/home'
 import Crear_cuenta from './Pages/Crear_cuenta'
 import Nosotros from './Pages/Nosotros'
 import Administrador from './Pages/administrador'
+import Categoria from './Pages/Categoria'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/Nosotros" element={<Nosotros />} />
         <Route path="/Crear_cuenta" element={<Crear_cuenta />} />
         <Route path="/Administrador" element={<Administrador />} />
+        <Route path="/categoria/:nameDepartment" element={<Categoria />} />      
       </Routes>
 
     </BrowserRouter>
