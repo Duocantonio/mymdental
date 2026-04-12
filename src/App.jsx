@@ -3,7 +3,7 @@ import Navegacion from './Components/navegacion'
 import Home from './Pages/home'
 import Crear_cuenta from './Pages/Crear_cuenta'
 import Nosotros from './Pages/Nosotros'
-import Administrador from './Pages/administrador'
+import Administrador from '.Administrador'
 import Categoria from './Pages/Categoria'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
