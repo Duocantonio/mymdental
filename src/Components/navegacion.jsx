@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../Styles/navegacion.css';
+import logoImagen from '../assets/Imagenes/Logomym.png';
+
+
 
 export default function Navegacion() {
   const [mostrarMenu, setMostrarMenu] = useState(false);
@@ -12,15 +15,19 @@ export default function Navegacion() {
     fetch('http://localhost:8080/MyMDentalCommerce/departments/getDepartments')
       .then(response => response.json())
       .then(data => setCategorias(data))
+      .catch(error => console.error("Error cargando categorías:", error));
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg fixed-top shadow-sm"> 
       <div className="container-fluid">
-        
-        <Link className="navbar-brand" to="/">
-          Inicio
-        </Link>
+        <Link className="navbar-brand logo" to="/">
+  <img 
+    src={logoImagen}  
+    alt="M&M Dental" 
+    
+  />
+</Link>
 
         <button
           className="navbar-toggler"
@@ -34,9 +41,7 @@ export default function Navegacion() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Home</Link>
-            </li>
+
 
             <li className="nav-item">
               <Link className="nav-link" to="/administrador">
