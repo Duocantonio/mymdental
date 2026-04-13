@@ -13,6 +13,16 @@ export default function Administrador() {
   const [nameDepartment, setNameDepartment] = useState("");
 
 
+  const [updateProductName, setUpdateProductName] = useState("");
+  const [updateCodeProduct, setUpdateCodeProduct] = useState("");
+  const [updatePriceProduct, setUpdatePriceProduct] = useState("");
+  const [updateCostPriceProduct, setUpdateCostPriceProduct] = useState("");
+  const [updateStockProduct, setUpdateStockProduct] = useState("");
+  const [updateCriticProduct, setUpdateCriticProduct] = useState("");
+  const [updateDescriptionProduct, setUpdateDescriptionProduct] = useState("");
+  const [updateNameDepartment, setUpdateNameDepartment] = useState("");
+
+
 
 
 
@@ -70,20 +80,20 @@ export default function Administrador() {
 
   const actualizarProducto = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:8080/MyMDentalCommerce/products/editProduct/${productName}`,{
+    fetch(`http://localhost:8080/MyMDentalCommerce/products/editProduct/${updateProductName}`,{
       method: 'PUT',
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        codeProduct,
-        productName,
-        priceProduct,
-        costPriceProduct,
-        stockProduct,
-        criticProduct,
-        descriptionProduct,
-        nameDepartment
+        codeProduct: updateCodeProduct,
+        productName: updateProductName,
+        priceProduct: updatePriceProduct,
+        costPriceProduct: updateCostPriceProduct,
+        stockProduct: updateStockProduct,
+        criticProduct: updateCriticProduct,
+        descriptionProduct: updateDescriptionProduct,
+        nameDepartment: updateNameDepartment
       })
 
     })
@@ -180,54 +190,57 @@ export default function Administrador() {
         <input 
           type="text" 
           placeholder="Nombre del Producto a actualizar" 
-          value={productName} 
-          onChange={(e) => setProductName(e.target.value)} 
+          value={updateProductName} 
+          onChange={(e) => setUpdateProductName(e.target.value)} 
           required 
         />
 
         <input 
           type="text" 
           placeholder="Nuevo código del Producto"
-          value={codeProduct}
-          onChange={(e) => setCodeProduct(e.target.value)} 
+          value={updateCodeProduct}
+          onChange={(e) => setUpdateCodeProduct(e.target.value)} 
         />
+
         <input 
           type="number" 
           placeholder="Nuevo precio de venta"
-          value={priceProduct}
-          onChange={(e) => setPriceProduct(e.target.value)} 
+          value={updatePriceProduct}
+          onChange={(e) => setUpdatePriceProduct(e.target.value)} 
         />
+
         <input 
           type="number" 
           placeholder="Nuevo precio de compra"
-          value={costPriceProduct}
-          onChange={(e) => setCostPriceProduct(e.target.value)} 
+          value={updateCostPriceProduct}
+          onChange={(e) => setUpdateCostPriceProduct(e.target.value)} 
         /> 
 
         <input 
           type="number" 
           placeholder="Nuevo stock inicial"
-          value={stockProduct}
-          onChange={(e) => setStockProduct(e.target.value)} 
+          value={updateStockProduct}
+          onChange={(e) => setUpdateStockProduct(e.target.value)} 
         />
+
         <input 
           type="number" 
           placeholder="Nuevo stock crítico"
-          value={criticProduct}
-          onChange={(e) => setCriticProduct(e.target.value)} 
+          value={updateCriticProduct}
+          onChange={(e) => setUpdateCriticProduct(e.target.value)} 
         />
 
         <input
-        type='text'
-        placeholder='indique la nueva categoria'
-        value={nameDepartment}
-        onChange={(e) => setNameDepartment(e.target.value)}
+          type='text'
+          placeholder='Nueva categoría'
+          value={updateNameDepartment}
+          onChange={(e) => setUpdateNameDepartment(e.target.value)}
         />
 
         <textarea 
           placeholder="Nueva descripción" 
-          value={descriptionProduct} 
-          onChange={(e) => setDescriptionProduct(e.target.value)} 
+          value={updateDescriptionProduct} 
+          onChange={(e) => setUpdateDescriptionProduct(e.target.value)} 
         />
 
         <button type='submit' className='btn'>Actualizar producto</button>
