@@ -3,7 +3,7 @@ import carrosule from "../assets/Imagenes/carrosule.png";
 import carrusel2 from "../assets/Imagenes/carrusel2.png";
 import marca1 from "../assets/Imagenes/marca1.png";
 import Productos from "../Components/Productos";
-import "../Styles/HomeStyle.css";
+import "../Styles/homeStyle.css";
 
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
 
     return (
         <>
-        <h1>Bienvenido a MYM DENTAL</h1>
+        <h1 className="Encabezado">Bienvenido a MYM DENTAL</h1>
 
         <div id="carouselExample" className="carousel slide">
             <div className="carousel-inner">

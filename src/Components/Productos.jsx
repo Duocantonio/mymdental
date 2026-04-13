@@ -16,7 +16,7 @@ console.log("URL:", urlBack);
 return (
   <div className="Card_group">
       {productos.map(producto => (
-        <div className="col-md-4" style={{ width: '15rem' }} key={producto.idProduct}>
+        <div className="col-md-3" style={{ width: '15rem' }} key={producto.idProduct}>
           <div className="card border border-black">            
             <h5 >{producto.productName}</h5>
             <p >{producto.descriptionProduct}</p>

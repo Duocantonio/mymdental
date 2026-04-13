@@ -1,96 +1,82 @@
-/* --- 1. DISEÑO BASE (ESCRITORIO) --- */
-.mega-menu {
+.navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque al fondo */
+  border-bottom: 3px solid #00C2CB; /* Línea Cian del logo */
+  padding: 0.8rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand.logo img {
+  height: 65px;
+  width: auto;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+  border-radius: 12px;
+}
+
+.navbar-brand.logo img:hover {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+.nav-link {
+  color: #004B49 !important; /* Verde oscuro para lectura clara */
+  font-weight: 600;
+  margin: 0 10px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
   position: absolute;
-  top: 100%;
+  width: 0;
+  height: 2px;
+  bottom: 0;
   left: 0;
+  background-color: #FF007F; /* Rosa vibrante */
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #FF007F !important;
+}
+
+.nav-link:hover::after {
   width: 100%;
-  background: #ffffff;
-  border-top: 1px solid #eaeaea;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  z-index: 1000;
-  
-  /* Ocultar por defecto si usas hover/clic para mostrarlo */
-  /* display: none; */ 
 }
 
 .mega-menu-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  background: white;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
-  row-gap: 8px; 
-  column-gap: 20px; 
-  padding: 20px 30px; 
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-bottom: 4px solid #32CD32; /* Verde Lima */
+  animation: fadeInDown 0.4s ease forwards;
 }
 
-.columna h5 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #1a1a1a;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.mega-menu-content a {
+.columna-categoria a {
   display: block;
-  padding: 3px 0; 
-  font-size: 0.85rem; 
-  color: #555555;
+  padding: 10px;
+  color: #555;
   text-decoration: none;
-  transition: all 0.2s ease;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
-.mega-menu-content a:hover {
-  color: #0d6efd;
-  transform: translateX(3px); 
+.columna-categoria a:hover {
+  background: #f0fdfa; /* Fondo cian muy clarito */
+  color: #00C2CB;
+  padding-left: 15px; /* Efecto de desplazamiento */
 }
 
-
-/* --- 2. DISEÑO PARA TABLETS (Menos de 992px) --- */
-@media (max-width: 992px) {
-  .mega-menu-content {
-    /* Hacemos las columnas un poco más estrechas para que quepan más en iPad/Tablets */
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    padding: 15px 20px;
-    column-gap: 15px;
-  }
-}
-
-
-/* --- 3. DISEÑO PARA MÓVILES (Menos de 768px) --- */
-@media (max-width: 768px) {
-  .mega-menu {
-    /* Deja de flotar y fluye dentro de tu menú hamburguesa */
-    position: static; 
-    box-shadow: none; /* Quitamos la sombra en móvil */
-    border-top: none;
-    background: #f8f9fa; /* Un fondo gris muy sutil para diferenciarlo del menú principal */
-  }
-
-  .mega-menu-content {
-    /* Forzamos a que sea 1 sola columna o máximo 2 */
-    grid-template-columns: 1fr; /* Cambia a "repeat(2, 1fr)" si quieres 2 columnas en móvil */
-    padding: 15px;
-    row-gap: 20px; /* Separamos más los bloques de categorías */
-  }
-
-  .columna h5 {
-    margin-bottom: 8px;
-    color: #0d6efd; /* Resaltar el título en móvil ayuda a guiar el ojo */
-    border-bottom: 1px solid #ddd; /* Una línea divisoria limpia */
-    padding-bottom: 5px;
-  }
-
-  .mega-menu-content a {
-    /* Aumentamos el padding para que sea fácil tocar con el dedo (Touch Target) */
-    padding: 10px 0; 
-    font-size: 0.95rem; /* Fuente más grande para leer mejor en pantallas pequeñas */
-  }
-
-  .mega-menu-content a:hover {
-    /* Quitamos el movimiento en móvil, a veces se siente raro al hacer tap */
-    transform: none; 
-    padding-left: 5px; /* Alternativa: un ligero margen izquierdo al presionar */
-  }
+/* Animación de entrada */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

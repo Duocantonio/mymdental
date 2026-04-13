@@ -1,5 +1,6 @@
 import './App.css'
 import Navegacion from './Components/navegacion'
+import Footer from './Components/Footer'
 import Home from './Pages/home'
 import Crear_cuenta from './Pages/Crear_cuenta'
 import Nosotros from './Pages/Nosotros'
@@ -20,7 +21,7 @@ function App() {
         <Route path="/Administrador" element={<Administrador />} />
         <Route path="/categoria/:nameDepartment" element={<Categoria />} />      
       </Routes>
-
+      <Footer />
     </BrowserRouter>
   )
 }
