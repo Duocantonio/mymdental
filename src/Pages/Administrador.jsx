@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../Styles/Administrador.css';
 
 export default function Administrador() {
 
