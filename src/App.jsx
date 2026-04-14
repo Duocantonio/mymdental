@@ -6,6 +6,7 @@ import Crear_cuenta from './Pages/Crear_cuenta'
 import Nosotros from './Pages/Nosotros'
 import Administrador from './Pages/Administrador'
 import Categoria from './Pages/Categoria'
+import InicioSesion from './Pages/inicio_sesion'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -19,7 +20,8 @@ function App() {
         <Route path="/Nosotros" element={<Nosotros />} />
         <Route path="/Crear_cuenta" element={<Crear_cuenta />} />
         <Route path="/Administrador" element={<Administrador />} />
-        <Route path="/categoria/:nameDepartment" element={<Categoria />} />      
+        <Route path="/categoria/:nameDepartment" element={<Categoria />} />
+        <Route path="/inicio_sesion" element={<InicioSesion />} />
       </Routes>
       <Footer />
     </BrowserRouter>

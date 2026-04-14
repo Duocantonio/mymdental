@@ -54,6 +54,13 @@ export default function Navegacion() {
             </li>
 
             <li className="nav-item">
+              <Link className="nav-link" to="/Inicio_sesion">
+                Inicio De Sesion
+              </Link>
+            </li>
+
+
+            <li className="nav-item">
               <Link className="nav-link" to="/Nosotros">
                 Nosotros
               </Link>
