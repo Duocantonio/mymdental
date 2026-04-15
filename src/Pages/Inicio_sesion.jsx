@@ -1,15 +1,42 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function InicioSesion() {
-  const [correo, setCorreo] = useState("");
-  const [contraseña, setContraseña] = useState("");
 
-  const handleSubmit = (e) => {
+  const [correo, setCorreo] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate= useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Correo:", correo);
-    console.log("Contraseña:", contraseña);
+    try {
+      const response = await fetch('http://localhost:8080/MyMDentalCommerce/session/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          username: correo,
+          password: password
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Credenciales incorrectas');
+      }
+      const data = await response.json();
+
+      console.log("Respuesta:", data);
+
+      alert("Login correcto");
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al iniciar sesión");
+    }
   };
 
   return (
@@ -26,14 +53,13 @@ export default function InicioSesion() {
 
         <input 
           type="password" 
-          placeholder="contraseña" 
-          value={contraseña} 
-          onChange={(e) => setContraseña(e.target.value)} 
+          placeholder="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
         />
 
         <button type="submit">Iniciar Sesión</button>
       </form>
-
       <p>¿No tienes una cuenta? <a href="/crear_cuenta">Crear cuenta</a></p>
     </>
   );

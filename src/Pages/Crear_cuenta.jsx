@@ -1,4 +1,4 @@
-import react, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 export default function Crear_cuenta() {
@@ -8,7 +8,7 @@ export default function Crear_cuenta() {
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [telefono, setTelefono] = useState("");
-    const [errores, setErrores] = useState("");
+    const [errores, setErrores] = useState(null);
 
 
     const manejarSubmit = (e) => {
@@ -43,7 +43,7 @@ export default function Crear_cuenta() {
             setErrores("Las contraseñas no coinciden");
             return;
         }
-        if(telefono.length<9 || telefono.length>9){
+        if (telefono.length !== 9) {
             setErrores("El teléfono debe tener 9 dígitos");
             return;
         }
@@ -92,13 +92,7 @@ export default function Crear_cuenta() {
         onChange={(e) => setTelefono(e.target.value)} 
     />
 
-
-
-
-
-
-
-    <button onClick={manejarSubmit}>Crear Cuenta</button>
+    <button type="submit">Crear Cuenta</button>
     {errores && <p>{errores}</p>}
     </form>
 
