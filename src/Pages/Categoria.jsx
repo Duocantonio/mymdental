@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Productos from '../Components/Productos';
+import "../Styles/Categoria.css"
 
 export default function Categoria() {
 
@@ -13,7 +14,7 @@ export default function Categoria() {
 
   return (
     <>
-      <h2>{nombreCategoria}</h2>
+      <h2 className='Titulo' class="text-center">{nombreCategoria}</h2>
       <Productos urlBack={urlBack} />
     </>
   );

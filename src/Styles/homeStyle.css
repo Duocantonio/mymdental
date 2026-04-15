@@ -32,3 +32,11 @@
   font-size: 2em;
   color: #333;
 }
+.encabezadoHome{
+  color: #00C2CB;
+  display: absolute;
+  text-align: center;
+  margin: 10px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 5em;
+}

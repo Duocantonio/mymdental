@@ -52,6 +52,7 @@ export default function Home() {
                 <img src={marca1} alt="Marca4"/>
             </div>
         </div>
+        <h1 className="encabezadoHome"> Algunos de nuestros productos </h1>
 
         <Productos urlBack={urlBack} />
 

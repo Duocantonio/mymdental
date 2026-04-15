@@ -6,7 +6,7 @@ import Crear_cuenta from './Pages/Crear_cuenta'
 import Nosotros from './Pages/Nosotros'
 import Administrador from './Pages/Administrador'
 import Categoria from './Pages/Categoria'
-import InicioSesion from './Pages/inicio_sesion'
+import InicioSesion from './Pages/Inicio_sesion'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 

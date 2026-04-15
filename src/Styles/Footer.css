@@ -1,6 +1,7 @@
 .links{
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 
@@ -9,4 +10,20 @@
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+}
+
+.text-center{
+    color: rgb(0, 0, 0);
+}
+.Copyright{
+    justify-content: center;
+    display: flex;
+    gap : 10px;
+    color: blanchedalmond;
+}
+
+
+
+.footer {
+    background-color: #e786b6;
 }

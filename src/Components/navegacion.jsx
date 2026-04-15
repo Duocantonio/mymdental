@@ -66,6 +66,7 @@ export default function Navegacion() {
               </Link>
             </li>
 
+
             <li
               className="nav-item position-static"
               onMouseEnter={handleMouseEnter}  //  cancela el timer
