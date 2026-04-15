@@ -8,46 +8,75 @@ export default function Crear_cuenta() {
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [telefono, setTelefono] = useState("");
+    const [rol, setRol] = useState("CLIENT");
     const [errores, setErrores] = useState(null);
 
+const manejarSubmit = async (e) => {
+    e.preventDefault();
+    setErrores("");
 
-    const manejarSubmit = (e) => {
-        e.preventDefault();
-        setErrores("");
-        
-        if(nombre.length<3){
-            setErrores("El nombre debe tener al menos 3 caracteres");
-            return;
-        }
-        if(apellido.length<3){
-            setErrores("El apellido debe tener al menos 3 caracteres");
-            return;
+    if(nombre.length < 3){
+        setErrores("El nombre debe tener al menos 3 caracteres");
+        return;
+    }
+
+    if(apellido.length < 3){
+        setErrores("El apellido debe tener al menos 3 caracteres");
+        return;
+    }
+
+    if (!email.includes("@gmail.com") && !email.includes("@hotmail.com")) {
+        setErrores("El email no es válido");
+        return;
+    }
+
+    if (email.length < 6){
+        setErrores("El email debe tener al menos 6 caracteres");
+        return;
+    }
+
+    if(password.length < 6){
+        setErrores("La contraseña debe tener al menos 6 caracteres");
+        return;
+    }
+
+    if(password !== password2){
+        setErrores("Las contraseñas no coinciden");
+        return;
+    }
+
+    if (telefono.length !== 9) {
+        setErrores("El teléfono debe tener 9 dígitos");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:8080/MyMDentalCommerce/session/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nameUser: nombre,
+                last_name_user: apellido,
+                emailUser: email,
+                passwordUser: password,
+                cellphone_user: telefono,
+                role: rol
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al registrar");
         }
 
-        if (!email.includes("@gmail.com") && !email.includes("@hotmail.com")) {
-            setErrores("El email no es válido");
-            return;
-        }
+        alert("Cuenta creada correctamente");
 
-        if (email.length<6){
-            setErrores("El email debe tener al menos 6 caracteres");
-            return;
-        }
+    } catch (error) {
+        setErrores(error.message);
+    }
+};
 
-        if(password.length<6){
-            setErrores("La contraseña debe tener al menos 6 caracteres");
-            return;
-        }
-
-        if(password !==password2){
-            setErrores("Las contraseñas no coinciden");
-            return;
-        }
-        if (telefono.length !== 9) {
-            setErrores("El teléfono debe tener 9 dígitos");
-            return;
-        }
-    };
 
     return (
     <form onSubmit={manejarSubmit}>
@@ -86,9 +115,9 @@ export default function Crear_cuenta() {
     />
 
     <input 
-        type="number" 
+        type="number"
         placeholder="Teléfono" 
-        value={telefono} 
+        value={telefono}
         onChange={(e) => setTelefono(e.target.value)} 
     />
 
