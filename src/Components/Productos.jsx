@@ -16,7 +16,7 @@ export default function Productos({ urlBack }) {
 
   return (
  
-    <div className="row row-cols-1 row-cols-md-3 g-4 container mx-auto">
+    <div className="row row-cols-1 row-cols-md-4 g-4 container mx-auto">
       {productos.sort(() => Math.random() -0.5).slice(0,12).map(producto => (
         <div className="col" key={producto.idProduct}>
           <div className="card h-100 border border-black shadow-sm">
