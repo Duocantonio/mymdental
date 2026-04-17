@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import "../Styles/Crear_cuenta.css";
 
 
 export default function Crear_cuenta() {
@@ -79,51 +80,65 @@ const manejarSubmit = async (e) => {
 
 
     return (
-    <form onSubmit={manejarSubmit}>
-    <div>Formulario</div>
+   <div className="register-page"> 
+        <form onSubmit={manejarSubmit} className="form-container">
+            <h2 className="form-title">Crear Cuenta</h2>
 
-    <input 
-        type="text" 
-        placeholder="Nombre" 
-        value={nombre} 
-        onChange={(e) => setNombre(e.target.value)} 
-    />
-    <input 
-        type="text" 
-        placeholder="Apellido" 
-        value={apellido} 
-        onChange={(e) => setApellido(e.target.value)} 
-    />
-    <input 
-        type="email" 
-        placeholder="Email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-    />
-    <input 
-        type="password" 
-        placeholder="Contraseña" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-    />
+            <div className="form-grid">
+                <input 
+                    className="form-input"
+                    type="text" 
+                    placeholder="Nombre" 
+                    value={nombre} 
+                    onChange={(e) => setNombre(e.target.value)} 
+                />
+                <input 
+                    className="form-input"
+                    type="text" 
+                    placeholder="Apellido" 
+                    value={apellido} 
+                    onChange={(e) => setApellido(e.target.value)} 
+                />
+            </div>
 
-    <input 
-        type="password" 
-        placeholder="Repetir Contraseña" 
-        value={password2} 
-        onChange={(e) => setPassword2(e.target.value)} 
-    />
+            <input 
+                className="form-input"
+                type="email" 
+                placeholder="Email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+            />
 
-    <input 
-        type="number"
-        placeholder="Teléfono" 
-        value={telefono}
-        onChange={(e) => setTelefono(e.target.value)} 
-    />
+            <div className="form-grid">
+                <input 
+                    className="form-input"
+                    type="password" 
+                    placeholder="Contraseña" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                />
+                <input 
+                    className="form-input"
+                    type="password" 
+                    placeholder="Repetir Contraseña" 
+                    value={password2} 
+                    onChange={(e) => setPassword2(e.target.value)} 
+                />
+            </div>
 
-    <button type="submit">Crear Cuenta</button>
-    {errores && <p>{errores}</p>}
-    </form>
+            <input 
+                className="form-input"
+                type="number"
+                placeholder="Teléfono (9 dígitos)" 
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)} 
+            />
 
+            <button type="submit" className="form-button">Registrarse</button>
+            
+            {errores && <p className="error-message">{errores}</p>}
+        </form>
+    </div>
   )
 }
+

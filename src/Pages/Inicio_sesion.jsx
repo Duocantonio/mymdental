@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../Styles/Inicio_sesion.css"
 
 export default function InicioSesion() {
 
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
+
+
 
   const navigate= useNavigate();
 
@@ -26,6 +29,7 @@ export default function InicioSesion() {
       if (!response.ok) {
         throw new Error('Credenciales incorrectas');
       }
+     
       const data = await response.json();
 
       console.log("Respuesta:", data);
@@ -41,10 +45,12 @@ export default function InicioSesion() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div>Inicio de sesión</div>
+    <div className='login-page'>
+      <form onSubmit={handleSubmit} className='form-container'>
+        <div className='form-title'>Inicio de sesión</div>
 
         <input 
+        className='form-input'
           type="text" 
           placeholder="correo" 
           value={correo} 
@@ -52,15 +58,19 @@ export default function InicioSesion() {
         />
 
         <input 
+        className='form-input'
           type="password" 
           placeholder="password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
         />
 
-        <button type="submit">Iniciar Sesión</button>
+        <button type="submit" class="form-button"
+        >Iniciar Sesión</button>
+      <p className='register-link'>¿No tienes una cuenta? <a href="/crear_cuenta">Crear cuenta</a></p>
+      
       </form>
-      <p>¿No tienes una cuenta? <a href="/crear_cuenta">Crear cuenta</a></p>
-    </>
+      
+    </div> </>
   );
 }
