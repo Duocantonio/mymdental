@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import "../Styles/Productos.css";
 import logoImagen from '../assets/Imagenes/Logomym.png';
+import { Link } from 'react-router-dom';
 
 
 export default function Productos({ urlBack }) {
@@ -38,7 +39,9 @@ export default function Productos({ urlBack }) {
 
             <div className="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
               <small className="text-muted">Stock: {producto.stockProduct}</small>
-              <button className="btn btn-sm btn-outline-primary">Detalles</button>
+              <Link to={`/detalles/${producto.idProduct}`} className="btn btn-sm btn-outline-primary">
+                Detalles
+              </Link>            
             </div>
           </div>
         </div>

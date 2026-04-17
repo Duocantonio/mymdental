@@ -7,6 +7,10 @@ import Nosotros from './Pages/Nosotros'
 import Administrador from './Pages/Administrador'
 import Categoria from './Pages/Categoria'
 import InicioSesion from './Pages/Inicio_sesion'
+import Detalles from './Components/Detalles'
+import Trabajador from './Pages/Trabajador'
+
+
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -22,6 +26,8 @@ function App() {
         <Route path="/Administrador" element={<Administrador />} />
         <Route path="/categoria/:nameDepartment" element={<Categoria />} />
         <Route path="/inicio_sesion" element={<InicioSesion />} />
+        <Route path="/detalles/:idProduct" element={<Detalles />} />
+        <Route path="Trabajador" element={<Trabajador />} />
       </Routes>
       <Footer />
     </BrowserRouter>

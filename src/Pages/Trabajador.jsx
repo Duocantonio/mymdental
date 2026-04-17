@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Styles/Administrador.css';
 
-export default function Administrador() {
+export default function Trabajador() {
 
   const [codeProduct, setCodeProduct] = useState("");
   const [productName, setProductName] = useState("");
@@ -56,22 +56,6 @@ export default function Administrador() {
       alert("Error de conexión con el servidor");
     });
   };
-
-  
-
-  const eliminarProducto = (e) => {
-    e.preventDefault();
-    fetch(`http://localhost:8080/MyMDentalCommerce/products/deleteProduct/${productName}`, {
-      method: 'DELETE'
-    })
-    .then(response => {
-      if(response.ok){
-        alert("Producto eliminado exitosamente");
-      } else {
-        alert("Error al eliminar el producto");
-      } 
-  })}
-
 
   const actualizarProducto = (e) => {
     e.preventDefault();
@@ -168,19 +152,7 @@ export default function Administrador() {
         />
         <button type='submit' className='btn'>Registrar producto</button>
       </form>
-      <form onSubmit={eliminarProducto} className='form'>
-        <input 
-          type="text"
-          placeholder="Nombre del producto a eliminar"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-          required
-        />
-        <button type='submit' className='btn'>Eliminar producto</button>
-      </form>
-
-
-
+    
       <form onSubmit={actualizarProducto} className='form'>
         <input 
           type="text" 
