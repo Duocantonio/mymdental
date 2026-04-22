@@ -59,10 +59,10 @@ const manejarSubmit = async (e) => {
             },
             body: JSON.stringify({
                 nameUser: nombre,
-                last_name_user: apellido,
+                surnameUser: apellido,
                 emailUser: email,
                 passwordUser: password,
-                cellphone_user: telefono,
+                cellphoneUser: telefono,
                 role: rol
             })
         });
