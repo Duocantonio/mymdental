@@ -9,16 +9,16 @@ import Categoria from './Pages/Categoria'
 import InicioSesion from './Pages/Inicio_sesion'
 import Detalles from './Components/Detalles'
 import Trabajador from './Pages/Trabajador'
-
-
-
+import { CartProvider } from './Components/CartContext'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import  {Carrito} from './Pages/Carrito'
 
 function App() {
   return (
     <BrowserRouter>
-      <Navegacion />
 
+      <CartProvider>
+      <Navegacion />
       <Routes>
         <Route path="/"element={<Home />} />
         <Route path="/Nosotros" element={<Nosotros />} />
@@ -28,8 +28,10 @@ function App() {
         <Route path="/inicio_sesion" element={<InicioSesion />} />
         <Route path="/detalles/:idProduct" element={<Detalles />} />
         <Route path="Trabajador" element={<Trabajador />} />
+        <Route path="/carrito" element={<Carrito />} />
       </Routes>
       <Footer />
+      </CartProvider>
     </BrowserRouter>
   )
 }

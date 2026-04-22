@@ -65,6 +65,12 @@ export default function Navegacion() {
               </Link>
             </li>
 
+            <li className="nav-item">
+              <Link className="nav-link" to="/carrito">
+                Carrito
+              </Link>
+            </li>
+
 
             <li className="nav-item">
               <Link className="nav-link" to="/Nosotros">

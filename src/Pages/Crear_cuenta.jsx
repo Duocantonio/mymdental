@@ -53,16 +53,16 @@ const manejarSubmit = async (e) => {
 
     try {
         const response = await fetch("http://localhost:8080/MyMDentalCommerce/session/register", {
-            method: "POST",
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 nameUser: nombre,
-                last_name_user: apellido,
+                surnameUser: apellido,
                 emailUser: email,
                 passwordUser: password,
-                cellphone_user: telefono,
+                cellphoneUser: telefono,
                 role: rol
             })
         });
@@ -74,7 +74,7 @@ const manejarSubmit = async (e) => {
         alert("Cuenta creada correctamente");
 
     } catch (error) {
-        setErrores(error.message);
+        setErrores(error);
     }
 };
 
