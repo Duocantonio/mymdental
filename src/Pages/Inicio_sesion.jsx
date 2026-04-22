@@ -13,35 +13,36 @@ export default function InicioSesion() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch('http://localhost:8080/MyMDentalCommerce/session/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-          username: correo,
-          password: password
-        })
-      });
+        const response = await fetch('http://localhost:8080/MyMDentalCommerce/session/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                emailUser: correo,  
+                password: password
+            })
+        });
 
-      if (!response.ok) {
-        throw new Error('Credenciales incorrectas');
-      }
-     
-      const data = await response.json();
+        if (!response.ok) {
+            throw new Error('Credenciales incorrectas');
+        }
 
-      console.log("Respuesta:", data);
+        const data = await response.json();
+        console.log("Respuesta:", data)
 
-      alert("Login correcto");
-      navigate("/");
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+
+        alert("Login correcto");
+        navigate("/");
 
     } catch (error) {
-      console.error(error);
-      alert("Error al iniciar sesión");
+        console.error(error);
+        alert("Error al iniciar sesión");
     }
-  };
+};
 
   return (
     <>
