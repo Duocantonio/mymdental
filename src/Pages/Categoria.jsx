@@ -7,7 +7,7 @@ export default function Categoria() {
   const { nameDepartment } = useParams();
   const nombreCategoria = decodeURIComponent(nameDepartment);
 
-  const urlBack = `http://localhost:8080/MyMDentalCommerce/products/filterClientProducts/${nombreCategoria}`;
+  const urlBack = `http://localhost:8080/MyMDentalCommerce/products/filterAdminProducts/${nombreCategoria}`;
 
   console.log("Categoria:", nombreCategoria);
   console.log("URL:", urlBack);
