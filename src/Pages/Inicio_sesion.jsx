@@ -34,7 +34,10 @@ export default function InicioSesion() {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
-
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("useremail", data.useremail);
+        localStorage.setItem("usercellphone", data.usercellphone);
+        
         alert("Login correcto");
         navigate("/");
 

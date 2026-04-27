@@ -9,6 +9,7 @@ import Categoria from './Pages/Categoria'
 import InicioSesion from './Pages/Inicio_sesion'
 import Detalles from './Components/Detalles'
 import Trabajador from './Pages/Trabajador'
+import Perfil_usuario from './Pages/Perfil_usuario'
 import { CartProvider } from './Components/CartContext'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import  {Carrito} from './Pages/Carrito'
@@ -29,6 +30,7 @@ function App() {
         <Route path="/detalles/:idProduct" element={<Detalles />} />
         <Route path="Trabajador" element={<Trabajador />} />
         <Route path="/carrito" element={<Carrito />} />
+        <Route path="/Perfil_usuario" element={<Perfil_usuario />} />
       </Routes>
       <Footer />
       </CartProvider>

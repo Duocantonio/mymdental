@@ -28,6 +28,11 @@ export default function Navegacion() {
     }, 200); // 200ms de gracia para cruzar al menú
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    alert("Sesión cerrada");
+  };
   return (
     <nav className="navbar navbar-expand-lg fixed-top shadow-sm">
       <div className="container-fluid">
@@ -59,11 +64,12 @@ export default function Navegacion() {
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/Inicio_sesion">
-                Inicio De Sesion
-              </Link>
-            </li>
+            <Link 
+              to="/Inicio_sesion" className="nav-link"
+            >
+              Iniciar sesión
+            </Link>
+         
 
             <li className="nav-item">
               <Link className="nav-link" to="/carrito">
@@ -71,6 +77,11 @@ export default function Navegacion() {
               </Link>
             </li>
 
+            <li className='nav-item'>
+              <Link className="nav-link" to="/Perfil_usuario">
+                Perfil
+              </Link>
+            </li>
 
             <li className="nav-item">
               <Link className="nav-link" to="/Nosotros">
@@ -104,6 +115,13 @@ export default function Navegacion() {
               )}
             </li>
           </ul>
+          <button>
+            {localStorage.getItem("token") && (
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+            )}
+          </button>
         </div>
       </div>
     </nav>

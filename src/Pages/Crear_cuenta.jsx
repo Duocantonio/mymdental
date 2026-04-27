@@ -72,6 +72,7 @@ const manejarSubmit = async (e) => {
         }
 
         alert("Cuenta creada correctamente");
+        window.location.href = "/Perfil_usuario";
 
     } catch (error) {
         setErrores(error);
