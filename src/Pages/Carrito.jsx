@@ -1,29 +1,30 @@
 import React from 'react'
-import { useCarrito } from '../Components/CartContext'
+import { useCarrito } from '../context/CartContext';
+import { useEffect } from 'react';
 import '../Styles/Carrito.css'
+import Marca1 from "../assets/Imagenes/marca1.png"
 
 export const Carrito = () => {
-    const { carrito, actualizarCantidad, eliminarProducto } = useCarrito();
-    const handleAumentarCantidad = (productoId) => {
-        actualizarCantidad(productoId, 1);
-    }
+    const { cart,
+         addToCart,
+          reduceQuantityFromCart,
+           deleteFromCart,
+            deleteCart,
+             getAllQuantityFromCart,
+              getTotalPriceFromCart,
+               getTotalPriceFromProduct,
+                saveCartInLocalStorage,
+                 getCartFromLocalStorage} = useCarrito();
 
-    const handleDisminuir = (productoId)=>{
-        const producto = carrito.find((cantidad) => cantidad.idProduct===productoId )
-        if (producto.cantidad>1){
-            actualizarCantidad(productoId,-1)
-        }
-    }
-    const totalCarrito = carrito.reduce(
-        (acc, producto) => acc + producto.priceProduct * producto.cantidad,
-        0
-    );
 
      return (
+        <>
+        <button onClick={()=> console.log(cart)}>print cart</button>
+        <button onClick={() => getCartFromLocalStorage()}>get resources</button>
         <div className="cart-container">
             <h2>Carrito de Compras</h2>
 
-            {carrito.length === 0 ? (
+            {cart.length === 0 ? (
                 <p>Tu carrito está vacío</p>
             ) : (
                 <>
@@ -36,17 +37,19 @@ export const Carrito = () => {
                     </div>
 
                     <ul className="cart-items">
-                        {carrito.map((producto) => {
-                            const totalprecio = producto.priceProduct * producto.cantidad;
+                        {cart.map((producto) => {
+                            console.log("Producto en carrito:", producto);
+
 
                             return (
                                 <li className="cart-item" key={producto.idProduct}>
                                     <div className="product-info">
                                         <img 
-                                            src={producto.imageProduct} 
+                                            src={Marca1} 
                                             className="product-image" 
-                                            alt={producto.productName}
+                                            alt="Product image"
                                         />
+                                        {console.log(producto)}
                                         <span>{producto.productName}</span>
                                     </div>
 
@@ -55,7 +58,7 @@ export const Carrito = () => {
                                     <div className="quantity-controls">
                                         <button 
                                             className="quantity-btn"
-                                            onClick={() => handleDisminuir(producto.idProduct)}
+                                            onClick={() => reduceQuantityFromCart(producto)}
                                         >
                                             -
                                         </button>
@@ -64,17 +67,17 @@ export const Carrito = () => {
 
                                         <button 
                                             className="quantity-btn"
-                                            onClick={() => handleAumentarCantidad(producto.idProduct)}
+                                            onClick={() => addToCart(producto)}
                                         >
                                             +
                                         </button>
                                     </div>
 
-                                    <p>${totalprecio}</p>
+                                    <p>${getTotalPriceFromProduct(producto)}</p>
 
                                     <button 
                                         className='remove-btn'
-                                        onClick={() => eliminarProducto(producto.idProduct)}
+                                        onClick={() => deleteFromCart(producto)}
                                     >
                                         🗑️
                                     </button>
@@ -87,11 +90,18 @@ export const Carrito = () => {
 
             
             <div className="cart-summary">
-                <h3>Resumen Pedido</h3>
+                <h3>Resumen Pedido: {getAllQuantityFromCart()}</h3>
                 <p className='total'>
-                    Total del carrito: <strong>${totalCarrito}</strong>
+                    Total del carrito: <strong>${getTotalPriceFromCart()}</strong>
                 </p>
             </div>
         </div>
+
+        <div>
+            <button onClick={deleteCart}>Borrar carrito</button>
+            <button onClick={() => saveCartInLocalStorage()}>Guardar carrito</button>
+            <button>Agendar carrito</button>
+        </div>
+        </>
     )
 }

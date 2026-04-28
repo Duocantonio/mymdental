@@ -1,8 +1,15 @@
 import React from 'react'
 import "../Styles/Productos.css";
 import { useProductsState } from '../hooks/UseProducts';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useCarrito } from '../context/CartContext';
+import Marca1 from "../assets/Imagenes/marca1.png"
 
 export default function Productos({ isFiltered = false, filter = "" }) {
+
+  const {addToCart} = useCarrito();
+
   const { productsState, pagesState } = useProductsState(1, isFiltered, filter);
   const { products, loading, error, errorBody, searchProductsByPage } = productsState
   const { maxPages, currentPage, loadingPages, errorPages, errorBodyPages, getDatesByProductsPage } = pagesState
@@ -52,10 +59,12 @@ export default function Productos({ isFiltered = false, filter = "" }) {
     <>
       <h1>Catálogo de productos</h1>
       {products.map((p) => (
-        <div key={p.id ?? p.productName}>
+        <div key={p.idProduct}>
           <h2>{p.productName}</h2>
           <p>{p.priceProduct}</p>
           <p>{p.nameDepartment}</p>
+          <Link to={`/detalles/${p.idProduct}`}>{p.idProduct}</Link>
+          <button onClick={() => addToCart(p)}>Agregar al carrito</button>
         </div>
       ))}
 
@@ -64,11 +73,11 @@ export default function Productos({ isFiltered = false, filter = "" }) {
           {pagesButtons.map((indexButton) => {
             if (indexButton === currentPage){
               return(
-                <button className='col-1 align-center text-center' disabled>{indexButton}</button>
+                <button id={indexButton} className='col-1 align-center text-center' disabled>{indexButton}</button>
               );
             }else{
               return(
-                <button className='col-1 align-center text-center'
+                <button id={indexButton} className='col-1 align-center text-center'
                 onClick={() => searchProductsByPage(indexButton)}
                 >{indexButton}</button>
               );

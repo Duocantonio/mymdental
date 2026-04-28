@@ -14,7 +14,7 @@ export default function Categoria() {
 
   return (
     <>
-      <h2 className='Titulo' class="text-center">{nombreCategoria}</h2>
+      <h2 className='Titulo' className="text-center">{nombreCategoria}</h2>
       <Productos isFiltered={true} filter={nombreCategoria}/>
     </>
   );
