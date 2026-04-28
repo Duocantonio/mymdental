@@ -25,12 +25,15 @@ export default function Navegacion() {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setMostrarMenu(false);
-    }, 200); // 200ms de gracia para cruzar al menú
+    }, 200); 
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("username");
+    localStorage.removeItem("useremail");
+    localStorage.removeItem("usercellphone");
     alert("Sesión cerrada");
   };
   return (
@@ -59,7 +62,7 @@ export default function Navegacion() {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/trabajador">
+              <Link className="nav-link" to="/Trabajador">
                 Trabajador
               </Link>
             </li>
@@ -117,7 +120,7 @@ export default function Navegacion() {
           </ul>
           <button>
             {localStorage.getItem("token") && (
-              <button className="btn btn-outline-danger" onClick={handleLogout}>
+              <button className="btn btn-outline-danger" onClick={handleLogout} to="/">
                 Cerrar sesión
               </button>
             )}

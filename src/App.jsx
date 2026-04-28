@@ -28,7 +28,7 @@ function App() {
         <Route path="/categoria/:nameDepartment" element={<Categoria />} />
         <Route path="/inicio_sesion" element={<InicioSesion />} />
         <Route path="/detalles/:idProduct" element={<Detalles />} />
-        <Route path="Trabajador" element={<Trabajador />} />
+        <Route path="/Trabajador" element={<Trabajador />} />
         <Route path="/carrito" element={<Carrito />} />
         <Route path="/Perfil_usuario" element={<Perfil_usuario />} />
       </Routes>

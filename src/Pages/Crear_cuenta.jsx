@@ -14,8 +14,8 @@ export default function Crear_cuenta() {
 
 const manejarSubmit = async (e) => {
     e.preventDefault();
-    setErrores("");
-
+    setErrores(null); 
+  
     if(nombre.length < 3){
         setErrores("El nombre debe tener al menos 3 caracteres");
         return;
@@ -62,23 +62,23 @@ const manejarSubmit = async (e) => {
                 surnameUser: apellido,
                 emailUser: email,
                 passwordUser: password,
-                cellphoneUser: telefono,
+                cellphoneUser: parseInt(telefono), 
                 role: rol
             })
         });
 
+      
         if (!response.ok) {
-            throw new Error("Error al registrar");
+            const errorData = await response.json().catch(() => null);
+            throw new Error(errorData?.message || "Error al registrar: Datos inválidos o correo ya existe");
         }
 
         alert("Cuenta creada correctamente");
-        window.location.href = "/Perfil_usuario";
-
+        navigation("/inicio_sesion");
     } catch (error) {
-        setErrores(error);
+        setErrores(error.toString()); 
     }
 };
-
 
     return (
    <div className="register-page"> 
