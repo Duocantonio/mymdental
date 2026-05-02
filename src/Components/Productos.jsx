@@ -1,16 +1,12 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../Styles/Productos.css";
 import logoImagen from '../assets/Imagenes/Logomym.png';
 import { Link } from 'react-router-dom';
 import { useCarrito } from '../Components/CartContext';
 
-
-
 export default function Productos({ urlBack }) {
   const [productos, setProductos] = useState([])
-
-  const {agregarAlCarrito} = useCarrito();
+  const { agregarAlCarrito } = useCarrito();
 
   const handleAgregarAlCarrito = (producto) => {
     if (productos) {
@@ -31,9 +27,8 @@ export default function Productos({ urlBack }) {
   }, [urlBack])
 
   return (
- 
     <div className="row row-cols-1 row-cols-md-4 g-4 container mx-auto">
-      {productos.sort(() => Math.random() -0.5).slice(0,12).map(producto => (
+      {productos.sort(() => Math.random() - 0.5).slice(0, 12).map(producto => (
         <div className="col" key={producto.codeProduct}>
           <div className="card h-100 border border-black shadow-sm">
             <img 
@@ -54,21 +49,20 @@ export default function Productos({ urlBack }) {
 
             <div className="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
               <small className="text-muted">Stock: {producto.stockProduct}</small>
-              <Link to={`/detalles/${producto.codeProduct}`} className="btn btn-sm btn-outline-primary">
+              <Link to={`/producto/${producto.codeProduct}`} className="btn btn-sm btn-outline-primary">
                 Detalles
-              </Link>            
+              </Link>           
             </div>
 
             <button
               className="btn btn-sm btn-primary w-100"
               onClick={() => handleAgregarAlCarrito(producto)}
-              >Añadir al carro socio</button>
-
-
-
+            >
+              Añadir al carro socio
+            </button>
           </div>
         </div>
       ))}
     </div>
   )
-  }
+}

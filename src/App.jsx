@@ -26,7 +26,7 @@ function App() {
         <Route path="/Administrador" element={<Administrador />} />
         <Route path="/categoria/:nameDepartment" element={<Categoria />} />
         <Route path="/inicio_sesion" element={<InicioSesion />} />
-        <Route path="/detalles/:idProduct" element={<Detalles />} />
+        <Route path="/producto/:idProduct" element={<Detalles />} />
         <Route path="Trabajador" element={<Trabajador />} />
         <Route path="/carrito" element={<Carrito />} />
       </Routes>

@@ -19,6 +19,7 @@ export default function InicioSesion() {
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: "include",
             body: JSON.stringify({ 
                 emailUser: correo,  
                 password: password
