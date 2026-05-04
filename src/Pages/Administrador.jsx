@@ -3,6 +3,8 @@ import Dashboard from '../Components/DashboardProductos';
 
 import "../Styles/Categoria.css"
 
+// Componente para la página de administración de productos
+
 export default function Administrador() {
 
   const { nameDepartment } = useParams();
