@@ -19,6 +19,31 @@ export const Carrito = () => {
         0
     );
 
+
+    const handlePurchase = () => {
+        const isConfirmed = window.confirm("¿Deseas finalizar tu compra? ");
+        if (!isConfirmed) {
+            return;
+        }
+
+        fetch('http://localhost:8080/MyMDentalCommerce/Orders/saveNewReserved', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: "include",
+            body: JSON.stringify(carrito)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    }
+
      return (
         <div className="cart-container">
             <h2>Carrito de Compras</h2>
@@ -91,6 +116,9 @@ export const Carrito = () => {
                 <p className='total'>
                     Total del carrito: <strong>${totalCarrito}</strong>
                 </p>
+                <button className='purchase-btn' onClick={handlePurchase} disabled={carrito.length === 0}>
+                    Finalizar Compra
+                </button>
             </div>
         </div>
     )

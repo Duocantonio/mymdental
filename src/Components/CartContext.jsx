@@ -21,7 +21,6 @@ export const CartProvider = ({children}) => {
             }
         });
     }
-
     const actualizarCantidad = (productoId, cantidad) => {
         setCarrito((carritoAnterior) =>
             carritoAnterior
@@ -32,7 +31,6 @@ export const CartProvider = ({children}) => {
                 )
         );
     };
-
 
     const eliminarProducto = (productoId) => {
         setCarrito((carritoAnterior)=>
