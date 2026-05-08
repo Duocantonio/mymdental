@@ -11,25 +11,37 @@ export default function Productos({ urlBack }) {
   const handleAgregarAlCarrito = (producto) => {
     if (productos) {
       agregarAlCarrito({
-        idProduct: producto.codeProduct,
+        idProduct: producto.idProduct,
         productName: producto.productName,
         priceProduct: producto.priceProduct,
+        stockProduct: producto.stockProduct,
         cantidad: 1
       })
     }
   }
 
-  useEffect(() => {
-    fetch(urlBack)
-      .then(response => response.json())
-      .then(data => setProductos(data))
-      .catch(error => console.error("Error al cargar productos:", error))
-  }, [urlBack])
+    useEffect(() => {
+  fetch(urlBack)
+    .then(response => {
+      console.log("STATUS:", response.status);
+      return response.json();
+    })
+    .then(data => {
+      console.log("DATA COMPLETA:", data);
+      console.log("TIPO DE DATA:", typeof data);
+      console.log("ES ARRAY:", Array.isArray(data));
+      console.log("PRIMER ELEMENTO:", data[0]);
+      setProductos(data);
+    })
+    .catch(error => console.error("ERROR:", error));
+}, [urlBack]);
+
+
 
   return (
     <div className="row row-cols-1 row-cols-md-4 g-4 container mx-auto">
-      {productos.sort(() => Math.random() - 0.5).slice(0, 12).map(producto => (
-        <div className="col" key={producto.codeProduct}>
+      {[...productos].sort(() => Math.random() - 0.5).slice(0, 12).map(producto => (
+        <div className="col" key={producto.idProduct}>
           <div className="card h-100 border border-black shadow-sm">
             <img 
               src={logoImagen}
@@ -49,7 +61,7 @@ export default function Productos({ urlBack }) {
 
             <div className="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
               <small className="text-muted">Stock: {producto.stockProduct}</small>
-              <Link to={`/producto/${producto.codeProduct}`} className="btn btn-sm btn-outline-primary">
+              <Link to={`/producto/${producto.idProduct}`} className="btn btn-sm btn-outline-primary">
                 Detalles
               </Link>           
             </div>

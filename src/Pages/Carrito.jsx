@@ -4,14 +4,15 @@ import '../Styles/Carrito.css'
 
 export const Carrito = () => {
     const { carrito, actualizarCantidad, eliminarProducto } = useCarrito();
+
     const handleAumentarCantidad = (productoId) => {
-        actualizarCantidad(productoId, 1);
+            actualizarCantidad(productoId, 1);
     }
 
     const handleDisminuir = (productoId)=>{
         const producto = carrito.find((cantidad) => cantidad.idProduct===productoId )
         if (producto.cantidad>1){
-            actualizarCantidad(productoId,-1)
+            actualizarCantidad(productoId, -1)
         }
     }
     const totalCarrito = carrito.reduce(
@@ -22,9 +23,13 @@ export const Carrito = () => {
 
     const handlePurchase = () => {
         const isConfirmed = window.confirm("¿Deseas finalizar tu compra? ");
-        if (!isConfirmed) {
+        if (!isConfirmed)
             return;
-        }
+
+            const carritoBack = carrito.map((producto) => ({
+                idProduct: producto.idProduct,
+                quantityReserved: producto.cantidad
+            }));
 
         fetch('http://localhost:8080/MyMDentalCommerce/Orders/saveNewReserved', {
             method: 'POST',
@@ -32,7 +37,7 @@ export const Carrito = () => {
                 'Content-Type': 'application/json'
             },
             credentials: "include",
-            body: JSON.stringify(carrito)
+            body: JSON.stringify(carritoBack)
         })
         .then((response) => response.json())
         .then((data) => {
