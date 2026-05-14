@@ -14,6 +14,11 @@ export const useCart = () => {
     }
     const existingProduct = cart.find((item) => item.idProduct === product.idProduct);
     if (existingProduct) {
+      const nuevaCantidad = existingProduct.quantity + 1;
+      if (nuevaCantidad > product.stockProduct) {
+        alert("No hay más stock disponible");
+        return;
+      }
       setCart(
         cart.map((item) =>
           item.idProduct === product.idProduct

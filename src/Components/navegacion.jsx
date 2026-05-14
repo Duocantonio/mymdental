@@ -52,6 +52,12 @@ export default function Navegacion() {
                 Admin
               </Link>
             </li>
+            
+            <li className="nav-item">
+              <Link className="nav-link" to="/Orders">
+                Orders
+              </Link>
+            </li>
 
             <li className="nav-item">
               <Link className="nav-link" to="/trabajador">

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import "../Styles/Inicio_sesion.css"
 
 export default function InicioSesion() {
-
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -17,8 +16,7 @@ export default function InicioSesion() {
         headers: {
           'Content-Type': 'application/json'
         },
-        withCredentials: true,
-        credentials: "include",
+        credentials: "include", 
         body: JSON.stringify({ 
           emailUser: correo,  
           password: password
@@ -33,8 +31,6 @@ export default function InicioSesion() {
       console.log("Respuesta:", data);
 
       localStorage.setItem("role", data.role);
-      navigate('/');
-
 
       const perfilResponse = await fetch('http://localhost:8080/MyMDentalCommerce/session/perfil', {
         credentials: "include"
@@ -47,12 +43,12 @@ export default function InicioSesion() {
         console.error('Error al obtener perfil: No autenticado');
       }
 
+      navigate('/');
+
     } catch (error) {
       console.error('Error:', error);
       alert('Error al iniciar sesión: ' + error.message);
     } 
-
-
   };
 
   return (
