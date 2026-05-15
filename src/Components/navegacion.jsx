@@ -10,6 +10,8 @@ export default function Navegacion() {
   const [categorias, setCategorias] = useState([]);
   const timeoutRef = useRef(null); //  guarda el timer
 
+  const role = localStorage.getItem("role");
+
   useEffect(() => {
     fetch('http://localhost:8080/MyMDentalCommerce/departments/getDepartments')
       .then(response => response.json())
@@ -27,6 +29,10 @@ export default function Navegacion() {
       setMostrarMenu(false);
     }, 200);
   };
+
+
+
+
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top shadow-sm">
@@ -48,21 +54,27 @@ export default function Navegacion() {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
             <li className="nav-item">
-              <Link className="nav-link" to="/administrador">
-                Admin
-              </Link>
+              {role === "ADMINISTRATOR" && (
+                <Link className="nav-link" to="/administrador">
+                  Admin
+                </Link>
+              )}
             </li>
             
             <li className="nav-item">
-              <Link className="nav-link" to="/Orders">
-                Orders
-              </Link>
+              {role === "ADMINISTRATOR" || role === "WORKER" ? (
+                <Link className="nav-link" to="/Orders">
+                  Orders
+                </Link>
+              ) : null}
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/trabajador">
-                Trabajador
-              </Link>
+              {role === "WORKER" || role === "ADMINISTRATOR" ? (
+                <Link className="nav-link" to="/trabajador">
+                  Trabajador
+                </Link>
+              ) : null}
             </li>
 
             <li className="nav-item">
