@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../Styles/Administrador.css';
 
 const API_PRODUCTS = import.meta.env.VITE_API_PRODUCTS;
@@ -15,6 +15,7 @@ const INITIAL_PRODUCT = {
   criticProduct: "",
   descriptionProduct: "",
   nameDepartment: "",
+  imageProduct: "",
 };
 
 const INITIAL_USER = {
@@ -67,6 +68,88 @@ function Field({ label, type = "text", value, onChange, placeholder, required, f
   );
 }
 
+// ── NEW: Image Upload Component ──────────────────────────────────────────────
+function ImageUpload({ label = "Imagen del producto", value, onChange, full }) {
+  const inputRef = useRef(null);
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => onChange(ev.target.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => onChange(ev.target.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handleDragOver = (e) => e.preventDefault();
+
+  const handleRemove = (e) => {
+    e.stopPropagation();
+    onChange("");
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  return (
+    <div className={`field-container ${full ? "field-full-width" : ""}`}>
+      <label className="field-label">{label}</label>
+      <div
+        className={`image-upload-zone ${value ? "has-image" : ""}`}
+        onClick={() => !value && inputRef.current?.click()}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
+        {value ? (
+          <div className="image-upload-preview">
+            <img src={value} alt="Vista previa" className="image-preview-img" />
+            <div className="image-upload-overlay">
+              <button
+                type="button"
+                className="image-change-btn"
+                onClick={() => inputRef.current?.click()}
+              >
+                Cambiar imagen
+              </button>
+              <button
+                type="button"
+                className="image-remove-btn"
+                onClick={handleRemove}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="image-upload-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p className="image-upload-text">Arrastra una imagen o haz clic para seleccionar</p>
+            <p className="image-upload-hint">PNG, JPG, WEBP — máx. 5 MB</p>
+          </div>
+        )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleFile}
+        />
+      </div>
+    </div>
+  );
+}
+// ────────────────────────────────────────────────────────────────────────────
+
 function PrimaryButton({ children, onClick, disabled }) {
   return (
     <button className="primary-button" onClick={onClick} disabled={disabled}>
@@ -85,6 +168,9 @@ export default function Administrador() {
   const [product, setProduct] = useState({ ...INITIAL_PRODUCT });
   const [updateProduct, setUpdateProduct] = useState({ ...INITIAL_PRODUCT });
   const [deleteProductName, setDeleteProductName] = useState("");
+  const [productList, setProductList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
 
   // User state
   const [user, setUser] = useState({ ...INITIAL_USER });
@@ -140,6 +226,7 @@ export default function Administrador() {
         if (res.ok) {
           showFeedback("Producto actualizado exitosamente", "success");
           setUpdateProduct({ ...INITIAL_PRODUCT });
+          fetchProductList();
         } else {
           showFeedback("Error al actualizar el producto", "error");
         }
@@ -159,6 +246,13 @@ export default function Administrador() {
         }
       })
       .catch(() => showFeedback("Error de conexión con el servidor", "error"));
+  };
+
+  const fetchProductList = () => {
+    fetch(`${API_PRODUCTS}/getProducts`)
+      .then(res => res.json())
+      .then(data => setProductList(data))
+      .catch(() => showFeedback("Error al cargar productos", "error"));
   };
 
   // User handlers
@@ -284,6 +378,13 @@ export default function Administrador() {
                 <Field label="Stock crítico" type="number" value={product.criticProduct} onChange={pf("criticProduct")} placeholder="0" />
                 <Field label="Categoría" type="select" value={product.nameDepartment} onChange={pf("nameDepartment")} options={depOptions} full />
                 <Field label="Descripción" type="textarea" value={product.descriptionProduct} onChange={pf("descriptionProduct")} placeholder="Descripción..." full />
+                {/* ── IMAGE UPLOAD ── */}
+                <ImageUpload
+                  label="Imagen del producto"
+                  value={product.imageProduct}
+                  onChange={(base64) => setProduct(prev => ({ ...prev, imageProduct: base64 }))}
+                  full
+                />
               </div>
               <div className="button-container">
                 <PrimaryButton onClick={handleRegistrarProducto}>Registrar producto</PrimaryButton>
@@ -303,6 +404,13 @@ export default function Administrador() {
                 <Field label="Nuevo stock" type="number" value={updateProduct.stockProduct} onChange={pu("stockProduct")} placeholder="0" />
                 <Field label="Nuevo stock crítico" type="number" value={updateProduct.criticProduct} onChange={pu("criticProduct")} placeholder="0" />
                 <Field label="Nueva descripción" type="textarea" value={updateProduct.descriptionProduct} onChange={pu("descriptionProduct")} placeholder="Nueva descripción..." full />
+                {/* ── IMAGE UPLOAD ── */}
+                <ImageUpload
+                  label="Nueva imagen del producto"
+                  value={updateProduct.imageProduct}
+                  onChange={(base64) => setUpdateProduct(prev => ({ ...prev, imageProduct: base64 }))}
+                  full
+                />
               </div>
               <div className="button-container">
                 <PrimaryButton onClick={handleActualizarProducto}>Actualizar producto</PrimaryButton>

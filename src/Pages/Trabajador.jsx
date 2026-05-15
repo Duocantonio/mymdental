@@ -15,6 +15,7 @@ const INITIAL_PRODUCT = {
   criticProduct: "",
   descriptionProduct: "",
   nameDepartment: "",
+  imageProduct: "",
 };
 
 const INITIAL_USER = {
@@ -84,6 +85,9 @@ export default function Administrador() {
   const [product, setProduct] = useState({ ...INITIAL_PRODUCT });
   const [updateProduct, setUpdateProduct] = useState({ ...INITIAL_PRODUCT });
   const [deleteProductName, setDeleteProductName] = useState("");
+  const [productList, setProductList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
 
   // User state
   const [user, setUser] = useState({ ...INITIAL_USER });
@@ -110,6 +114,16 @@ export default function Administrador() {
 
   const setField = (setter) => (key) => (e) =>
     setter((prev) => ({ ...prev, [key]: e.target.value }));
+
+  const handleImageChange = (setter) => (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setter((prev) => ({ ...prev, imageProduct: ev.target.result }));
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Product handlers
   const handleRegistrarProducto = () => {
@@ -139,6 +153,7 @@ export default function Administrador() {
         if (res.ok) {
           showFeedback("Producto actualizado exitosamente", "success");
           setUpdateProduct({ ...INITIAL_PRODUCT });
+          fetchProductList();
         } else {
           showFeedback("Error al actualizar el producto", "error");
         }
@@ -158,6 +173,13 @@ export default function Administrador() {
         }
       })
       .catch(() => showFeedback("Error de conexión con el servidor", "error"));
+  };
+
+  const fetchProductList = () => {
+    fetch(`${API_PRODUCTS}/getProducts`)
+      .then(res => res.json())
+      .then(data => setProductList(data))
+      .catch(() => showFeedback("Error al cargar productos", "error"));
   };
 
   // User handlers
@@ -222,10 +244,23 @@ export default function Administrador() {
     }
   }, [section, activeTab]);
 
+  useEffect(() => {
+    if (section === "productos" && activeTab === "actualizar") {
+      fetchProductList();
+    }
+  }, [section, activeTab]);
+
   const pf = setField(setProduct);
   const pu = setField(setUpdateProduct);
   const uf = setField(setUser);
   const uu = setField(setUpdateUser);
+
+  const filteredProducts = productList.filter(p => {
+    const name = (p.productName || "").toLowerCase();
+    const matchesName = name.includes(searchTerm.toLowerCase());
+    const matchesCat = !searchCategory || p.nameDepartment === searchCategory;
+    return matchesName && matchesCat;
+  });
 
   return (
     <div className="admin-container">
@@ -283,6 +318,15 @@ export default function Administrador() {
                 <Field label="Stock crítico" type="number" value={product.criticProduct} onChange={pf("criticProduct")} placeholder="0" />
                 <Field label="Categoría" type="select" value={product.nameDepartment} onChange={pf("nameDepartment")} options={depOptions} full />
                 <Field label="Descripción" type="textarea" value={product.descriptionProduct} onChange={pf("descriptionProduct")} placeholder="Descripción..." full />
+                <div className="field-container field-full-width">
+                  <label className="field-label">Imagen del producto</label>
+                  <input type="file" accept="image/*" className="field-input" onChange={handleImageChange(setProduct)} />
+                  {product.imageProduct && (
+                    <div className="image-preview-container">
+                      <img src={product.imageProduct} alt="Vista previa" className="image-preview" />
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="button-container">
                 <PrimaryButton onClick={handleRegistrarProducto}>Registrar producto</PrimaryButton>
@@ -293,6 +337,61 @@ export default function Administrador() {
           {/* Actualizar Producto */}
           {activeTab === "actualizar" && (
             <div>
+              <div className="product-list-search">
+                <div className="field-container">
+                  <label className="field-label">Buscar por nombre</label>
+                  <input className="field-input" type="text" placeholder="Nombre del producto..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
+                <div className="field-container">
+                  <label className="field-label">Filtrar por categoría</label>
+                  <select className="field-input" value={searchCategory} onChange={(e) => setSearchCategory(e.target.value)}>
+                    <option value="">-- Todas --</option>
+                    {depOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <button className="primary-button" onClick={fetchProductList} style={{ alignSelf: "flex-end" }}>Refrescar</button>
+              </div>
+
+              <div className="product-list-horizontal">
+                {filteredProducts.length === 0 ? (
+                  <p style={{ color: '#888', textAlign: 'center', width: '100%' }}>No se encontraron productos.</p>
+                ) : (
+                  filteredProducts.map(p => (
+                    <div
+                      key={p.codeProduct || p.productName}
+                      className={`product-card-mini ${updateProduct.productName === p.productName ? "selected" : ""}`}
+                      onClick={() => {
+                        setUpdateProduct({
+                          codeProduct: p.codeProduct || "",
+                          productName: p.productName || "",
+                          priceProduct: p.priceProduct ?? "",
+                          costPriceProduct: p.costPriceProduct ?? "",
+                          stockProduct: p.stockProduct ?? "",
+                          criticProduct: p.criticProduct ?? "",
+                          descriptionProduct: p.descriptionProduct || "",
+                          nameDepartment: p.nameDepartment || "",
+                          imageProduct: p.imageProduct || "",
+                        });
+                      }}
+                    >
+                      <div className="product-card-mini-img">
+                        {p.imageProduct ? (
+                          <img src={p.imageProduct} alt={p.productName} />
+                        ) : (
+                          <div className="product-card-mini-placeholder">
+                            {(p.productName || "?").charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <span className="product-card-mini-name">{p.productName}</span>
+                      <span className="product-card-mini-price">${p.priceProduct}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+
               <div className="product-grid">
                 <Field label="Nombre (exacto)" value={updateProduct.productName} onChange={pu("productName")} placeholder="Nombre exacto" required full />
                 <Field label="Nuevo código" value={updateProduct.codeProduct} onChange={pu("codeProduct")} placeholder="ej. PROD-002" />
@@ -302,6 +401,15 @@ export default function Administrador() {
                 <Field label="Nuevo stock" type="number" value={updateProduct.stockProduct} onChange={pu("stockProduct")} placeholder="0" />
                 <Field label="Nuevo stock crítico" type="number" value={updateProduct.criticProduct} onChange={pu("criticProduct")} placeholder="0" />
                 <Field label="Nueva descripción" type="textarea" value={updateProduct.descriptionProduct} onChange={pu("descriptionProduct")} placeholder="Nueva descripción..." full />
+                <div className="field-container field-full-width">
+                  <label className="field-label">Nueva imagen del producto</label>
+                  <input type="file" accept="image/*" className="field-input" onChange={handleImageChange(setUpdateProduct)} />
+                  {updateProduct.imageProduct && (
+                    <div className="image-preview-container">
+                      <img src={updateProduct.imageProduct} alt="Vista previa" className="image-preview" />
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="button-container">
                 <PrimaryButton onClick={handleActualizarProducto}>Actualizar producto</PrimaryButton>
