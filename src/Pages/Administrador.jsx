@@ -3,8 +3,9 @@ import '../Styles/Administrador.css';
 
 const API_PRODUCTS = import.meta.env.VITE_API_PRODUCTS;
 const API_DEPARTMENTS = import.meta.env.VITE_API_DEPARTMENTS;
-const API_USERS = import.meta.env.VITE_API_7;
+const API_USERS = import.meta.env.VITE_API_GetUsers;
 const API_USER_REGISTER = import.meta.env.VITE_API_USER_REGISTER;
+const API_UPDATE_USER = import.meta.env.VITE_API_UPDATE_USER;
 
 const INITIAL_PRODUCT = {
   codeProduct: "",
@@ -274,7 +275,7 @@ export default function Administrador() {
   };
 
   const handleActualizarUsuario = () => {
-    fetch(`${API_USERS}/updateUser/${updateUser.emailUser}`, {
+    fetch(`${API_UPDATE_USER}/${updateUser.emailUser}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updateUser),
@@ -292,7 +293,7 @@ export default function Administrador() {
 
   const handleEliminarUsuario = () => {
     if (!deleteUserEmail) return showFeedback("Ingresa el email del usuario.", "error");
-    fetch(`${API_USERS}/deleteUser/${deleteUserEmail}`, { method: "DELETE" })
+    fetch(`${API_DELETE_USER}/${deleteUserEmail}`, { method: "DELETE" })
       .then(res => {
         if (res.ok) {
           showFeedback("Usuario eliminado exitosamente", "success");
