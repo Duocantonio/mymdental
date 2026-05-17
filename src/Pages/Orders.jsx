@@ -10,38 +10,54 @@ export default function Orders() {
 
   const fetchOrders = async () => {
     setError(null);
+
     try {
-      const response = await fetch(`${api7}/${idOrder}`);
+      const response = await fetch(`${api7}/${idOrder}`, {
+      method: "GET",
+      credentials: "include"
+    });
+
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
+
       const data = await response.json();
+
       console.log(data);
+
       setOrder(data);
+
     } catch (error) {
+
       console.error('Error:', error);
       setError(error.message);
       setOrder(null);
+
     }
   };
 
-  const checkOrder = (id) => {
-    fetch(`${api8}/${id}`, {
-      method: "PUT"
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setOrder(data);
-      })
-      .catch(error => console.error('Error:', error));
-  };
+  const checkOrder = async (id) => {
 
-  const calcularTotalReserva = (items) => {
-    if (!items || items.length === 0) return 0;
-    return items.reduce((total, item) => {
-      return total + (item.quantityReserved * item.product.priceProduct);
-    }, 0);
+    try {
+
+      const response = await fetch(`${api8}/${id}`, {
+        method: "PUT",
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+
+      console.log("Reserva actualizada");
+
+      fetchOrders();
+
+    } catch (error) {
+
+      console.error('Error:', error);
+
+    }
   };
 
   return (
@@ -55,6 +71,7 @@ export default function Orders() {
           value={idOrder}
           onChange={(e) => setIdOrder(e.target.value)}
         />
+
         <button onClick={fetchOrders}>
           Consultar Orden
         </button>
@@ -68,23 +85,36 @@ export default function Orders() {
 
       {order && (
         <div>
-            <h2>Reserva #{order.idReserved}</h2>
-            <p>Estado: {order.activeReserved ? 'Por entregar' : 'Entregado'}</p>
-            <p>Codigo: {order.codeReserved}</p>
-            <p>Cliente: {order.userEntity.nameUser}</p>
 
-            <hr />
-            <h3>Detalle del Producto:</h3>
-            <p><strong>Producto:</strong> {order.product.productName}</p>
-            <p><strong>Cantidad:</strong> {order.quantityReserved}</p>
-            <p><strong>Precio Unitario:</strong> ${order.product.priceProduct}</p>
-            <p><strong>Total:</strong> ${order.quantityReserved * order.product.priceProduct}</p>
-            <hr />
-            <div>
+          <h2>Reserva #{order.idReserved}</h2>
+
+          <p>Estado: {order.activeReserved ? 'Por entregar' : 'Entregado'}</p>
+          <p>Codigo: {order.codeReserved}</p>
+          <p> Correo Cliente: {order.emailUserEntity}</p>
+          <hr />
+          <h3>Detalle del Producto:</h3>
+          <p>
+            <strong>Producto:</strong> {order.productName}
+          </p>
+          <p>
+            <strong>Cantidad:</strong> {order.quantityReserved}
+          </p>
+          <p>
+            <strong>Precio Unitario:</strong> ${order.priceProduct}
+          </p>
+
+          <p><strong>Total:</strong> ${order.quantityReserved * order.priceProduct}</p>
+          <hr />
+          <div>
+
+            {order.activeReserved && (
               <button onClick={() => checkOrder(order.idReserved)}>
                 Orden Entregada
               </button>
-            </div>
+            )}
+
+          </div>
+
         </div>
       )}
     </>

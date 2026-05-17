@@ -9,6 +9,8 @@ import Categoria from './Pages/Categoria'
 import InicioSesion from './Pages/Inicio_sesion'
 import Detalles from './Components/Detalles'
 import Trabajador from './Pages/Trabajador'
+import EditarDatos from './Pages/EditarDatos'
+import Perfil from './Pages/Perfil'
 import Orders from './Pages/Orders'
 import { CartProvider } from './Context/CartContext'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -50,6 +52,9 @@ const role= localStorage.getItem("role")
         <Route path="/categoria/:nameDepartment" element={<Categoria />} />
         <Route path="/inicio_sesion" element={<InicioSesion />} />
         <Route path="/producto/:idProduct" element={<Detalles />} />
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/EditarDatos" element={<EditarDatos />} />
+        
         <Route 
             path="/Trabajador"
             element={

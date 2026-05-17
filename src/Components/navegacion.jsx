@@ -30,10 +30,6 @@ export default function Navegacion() {
     }, 200);
   };
 
-
-
-
-
   return (
     <nav className="navbar navbar-expand-lg fixed-top shadow-sm">
       <div className="container-fluid">
@@ -86,6 +82,12 @@ export default function Navegacion() {
             <li className="nav-item">
               <Link className="nav-link" to="/carrito">
                 Carrito
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/Perfil">
+                Perfil
               </Link>
             </li>
 

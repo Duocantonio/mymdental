@@ -31,18 +31,8 @@ export default function InicioSesion() {
       console.log("Respuesta:", data);
 
       localStorage.setItem("role", data.role);
-
-      const perfilResponse = await fetch('http://localhost:8080/MyMDentalCommerce/session/perfil', {
-        credentials: "include"
-      });
-
-      if (perfilResponse.ok) {
-        const perfilData = await perfilResponse.text();
-        console.log("Perfil:", perfilData);
-      } else {
-        console.error('Error al obtener perfil: No autenticado');
-      }
-
+      localStorage.setItem("useremail", data.useremail);
+      localStorage.setItem("token", data.token);
       navigate('/');
 
     } catch (error) {

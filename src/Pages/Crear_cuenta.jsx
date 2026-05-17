@@ -13,10 +13,6 @@ export default function Crear_cuenta() {
     const [errores, setErrores] = useState(null);
 
 
-
-
-
-
 const manejarSubmit = async (e) => {
     e.preventDefault();
     setErrores("");
