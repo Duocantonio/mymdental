@@ -32,15 +32,27 @@ export default function Perfil() {
 
   return (
     <>
-    <div>Perfil</div>
+    <div className="container">
+        <h1 className="tittle">Perfil</h1>
+        <div className="container-form">
+           <div className="container-form-left">
+            <p>Nombre:</p>
+            
+            </div>
+        </div>
 
-    <p><strong>Nombre:</strong> {user.nameUser}</p>
-    <p><strong>Apellido:</strong> {user.surnameUser}</p>
-    <p><strong>Celular:</strong> {user.cellphoneUser}</p>
-    <p><strong>Email:</strong> {user.emailUser}</p>
+
+    </div>
+
     
 
     <button onClick={() => window.location.href = "/EditarDatos"}>Editar Datos</button>
     </>
   )
 }
+
+/*
+    <p><strong>Nombre:</strong> {user.nameUser}</p>
+    <p><strong>Apellido:</strong> {user.surnameUser}</p>
+    <p><strong>Celular:</strong> {user.cellphoneUser}</p>
+    <p><strong>Email:</strong> {user.emailUser}</p>*/
