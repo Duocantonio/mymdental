@@ -1,122 +1,129 @@
 import React, { useState } from 'react';
-
-const api7 = import.meta.env.VITE_API_7;
-const api8 = import.meta.env.VITE_API_8;
-
+import '../Styles/Orders.css';
+const API_GET_BY_ID = import.meta.env.VITE_API_7;
+const API_CHECK = import.meta.env.VITE_API_8;
 export default function Orders() {
-  const [idOrder, setIdOrder] = useState("");
-  const [order, setOrder] = useState(null);
+  const [searchId, setSearchId] = useState('');
+  const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
-
-  const fetchOrders = async () => {
+  const [loading, setLoading] = useState(false);
+  const fetchOrder = async () => {
+    if (!searchId.trim()) return;
     setError(null);
-
+    setLoading(true);
     try {
-      const response = await fetch(`${api7}/${idOrder}`, {
-      method: "GET",
-      credentials: "include"
-    });
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      console.log(data);
-
-      setOrder(data);
-
-    } catch (error) {
-
-      console.error('Error:', error);
-      setError(error.message);
-      setOrder(null);
-
-    }
-  };
-
-  const checkOrder = async (id) => {
-
-    try {
-
-      const response = await fetch(`${api8}/${id}`, {
-        method: "PUT",
-        credentials: "include"
+      const res = await fetch(`${API_GET_BY_ID}/${searchId}`, {
+        method: 'GET',
+        credentials: 'include'
       });
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}`);
-      }
-
-      console.log("Reserva actualizada");
-
-      fetchOrders();
-
-    } catch (error) {
-
-      console.error('Error:', error);
-
+      if (!res.ok) throw new Error('Orden no encontrada');
+      const data = await res.json();
+      setOrders(prev => {
+        if (prev.some(o => o.idReserved === data.idReserved)) return prev;
+        return [...prev, data];
+      });
+      setSearchId('');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-
+  const checkOrder = async (id) => {
+    try {
+      const res = await fetch(`${API_CHECK}/${id}`, {
+        method: 'PUT',
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Error al actualizar');
+      setOrders(prev =>
+        prev.map(o => (o.idReserved === id ? { ...o, activeReserved: false } : o))
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const removeOrder = (id) => {
+    setOrders(prev => prev.filter(o => o.idReserved !== id));
+  };
+  const total = (order) => (order.quantityReserved * order.priceProduct).toFixed(2);
   return (
-    <>
-      <div>Orders</div>
-
-      <div>
+    <div className="orders-page">
+      <h1 className="orders-title">Órdenes</h1>
+      <div className="orders-search">
         <input
+          className="orders-search-input"
           type="text"
-          placeholder='Ingrese el ID de la orden'
-          value={idOrder}
-          onChange={(e) => setIdOrder(e.target.value)}
+          placeholder="Buscar por ID de orden"
+          value={searchId}
+          onChange={e => setSearchId(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && fetchOrder()}
         />
-
-        <button onClick={fetchOrders}>
-          Consultar Orden
+        <button
+          className="orders-search-btn"
+          onClick={fetchOrder}
+          disabled={loading}
+        >
+          {loading ? 'Buscando...' : 'Buscar'}
         </button>
       </div>
-
-      {error && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          <p>Error al consultar la orden: {error}</p>
+      {error && <p className="orders-error">{error}</p>}
+      {orders.length > 0 && (
+        <div className="orders-table-wrapper">
+          <table className="orders-table">
+            <thead>
+              <tr>
+                <th>ID Reserva</th>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unit.</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map(order => (
+                <tr key={order.idReserved}>
+                  <td>{order.idReserved}</td>
+                  <td>{order.emailUserEntity}</td>
+                  <td>{order.productName}</td>
+                  <td>{order.quantityReserved}</td>
+                  <td>${order.priceProduct}</td>
+                  <td>${total(order)}</td>
+                  <td>
+                    <span className={`order-status ${order.activeReserved ? 'pending' : 'delivered'}`}>
+                      {order.activeReserved ? 'Por entregar' : 'Entregado'}
+                    </span>
+                  </td>
+                  <td className="orders-actions">
+                    {order.activeReserved && (
+                      <button
+                        className="orders-btn-check"
+                        onClick={() => checkOrder(order.idReserved)}
+                      >
+                        Marcar entregado
+                      </button>
+                    )}
+                    <button
+                      className="orders-btn-remove"
+                      onClick={() => removeOrder(order.idReserved)}
+                    >
+                      Quitar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-
-      {order && (
-        <div>
-
-          <h2>Reserva #{order.idReserved}</h2>
-
-          <p>Estado: {order.activeReserved ? 'Por entregar' : 'Entregado'}</p>
-          <p>Codigo: {order.codeReserved}</p>
-          <p> Correo Cliente: {order.emailUserEntity}</p>
-          <hr />
-          <h3>Detalle del Producto:</h3>
-          <p>
-            <strong>Producto:</strong> {order.productName}
-          </p>
-          <p>
-            <strong>Cantidad:</strong> {order.quantityReserved}
-          </p>
-          <p>
-            <strong>Precio Unitario:</strong> ${order.priceProduct}
-          </p>
-
-          <p><strong>Total:</strong> ${order.quantityReserved * order.priceProduct}</p>
-          <hr />
-          <div>
-
-            {order.activeReserved && (
-              <button onClick={() => checkOrder(order.idReserved)}>
-                Orden Entregada
-              </button>
-            )}
-
-          </div>
-
-        </div>
+      {orders.length === 0 && !error && (
+        <p className="orders-empty">
+          Ingresa un ID de orden y presiona Buscar para visualizarla.
+        </p>
       )}
-    </>
+    </div>
   );
 }
