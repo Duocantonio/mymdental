@@ -5,15 +5,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../Styles/navegacion.css';
 import logoImagen from '../assets/Imagenes/Logomym.png';
 
+
 export default function Navegacion() {
   const [mostrarMenu, setMostrarMenu] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const timeoutRef = useRef(null); //  guarda el timer
-
+  const URL = import.meta.env.VITE_API_DEPARTMENTS
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    fetch('http://localhost:8080/MyMDentalCommerce/departments/getDepartments')
+    fetch(URL)
       .then(response => response.json())
       .then(data => setCategorias(data))
       .catch(error => console.error("Error cargando categorías:", error));
@@ -74,8 +75,8 @@ export default function Navegacion() {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/Inicio_sesion">
-                Inicio De Sesion
+              <Link className="nav-link" to="/acceder">
+                Acceder
               </Link>
             </li>
 

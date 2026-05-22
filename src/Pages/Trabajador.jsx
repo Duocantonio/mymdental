@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef} from 'react';
 import '../Styles/Administrador.css';
 
 const API_PRODUCTS = import.meta.env.VITE_API_PRODUCTS;
@@ -32,7 +32,6 @@ const ROLES = ["CLIENT"];
 const PRODUCT_TABS = [
   { id: "registrar", label: "Registrar" },
   { id: "actualizar", label: "Actualizar" },
-  { id: "eliminar", label: "Eliminar" },
 ];
 
 const USER_TABS = [
@@ -115,15 +114,89 @@ export default function Administrador() {
   const setField = (setter) => (key) => (e) =>
     setter((prev) => ({ ...prev, [key]: e.target.value }));
 
-  const handleImageChange = (setter) => (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setter((prev) => ({ ...prev, imageProduct: ev.target.result }));
+
+
+
+  // ── NEW: Image Upload Component ──────────────────────────────────────────────
+  function ImageUpload({ label = "Imagen del producto", value, onChange, full }) {
+    const inputRef = useRef(null);
+  
+    const handleFile = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => onChange(ev.target.result);
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
+  
+    const handleDrop = (e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => onChange(ev.target.result);
+      reader.readAsDataURL(file);
+    };
+  
+    const handleDragOver = (e) => e.preventDefault();
+  
+    const handleRemove = (e) => {
+      e.stopPropagation();
+      onChange("");
+      if (inputRef.current) inputRef.current.value = "";
+    };
+  
+    return (
+      <div className={`field-container ${full ? "field-full-width" : ""}`}>
+        <label className="field-label">{label}</label>
+        <div
+          className={`image-upload-zone ${value ? "has-image" : ""}`}
+          onClick={() => !value && inputRef.current?.click()}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          {value ? (
+            <div className="image-upload-preview">
+              <img src={value} alt="Vista previa" className="image-preview-img" />
+              <div className="image-upload-overlay">
+                <button
+                  type="button"
+                  className="image-change-btn"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  Cambiar imagen
+                </button>
+                <button
+                  type="button"
+                  className="image-remove-btn"
+                  onClick={handleRemove}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="image-upload-placeholder">
+             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <p className="image-upload-text">Arrastra una imagen o haz clic para seleccionar</p>
+              <p className="image-upload-hint">PNG, JPG, WEBP — máx. 5 MB</p>
+            </div>
+          )}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleFile}
+          />
+        </div>
+      </div>
+    );
+  }
 
   // Product handlers
   const handleRegistrarProducto = () => {
@@ -271,7 +344,7 @@ export default function Administrador() {
 
       {/* Header */}
       <div className="admin-header">
-        <p className="admin-subtitle">Panel de administración</p>
+        <p className="admin-subtitle">Panel de Trabajador</p>
         <h1 className="admin-title">Gestión</h1>
       </div>
 
@@ -319,13 +392,12 @@ export default function Administrador() {
                 <Field label="Categoría" type="select" value={product.nameDepartment} onChange={pf("nameDepartment")} options={depOptions} full />
                 <Field label="Descripción" type="textarea" value={product.descriptionProduct} onChange={pf("descriptionProduct")} placeholder="Descripción..." full />
                 <div className="field-container field-full-width">
-                  <label className="field-label">Imagen del producto</label>
-                  <input type="file" accept="image/*" className="field-input" onChange={handleImageChange(setProduct)} />
-                  {product.imageProduct && (
-                    <div className="image-preview-container">
-                      <img src={product.imageProduct} alt="Vista previa" className="image-preview" />
-                    </div>
-                  )}
+                  <ImageUpload
+                  label="Imagen del producto"
+                  value={product.imageProduct}
+                  onChange={(base64) => setProduct(prev => ({ ...prev, imageProduct: base64 }))}
+                  full
+                />
                 </div>
               </div>
               <div className="button-container">
