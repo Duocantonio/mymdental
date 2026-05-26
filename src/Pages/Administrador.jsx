@@ -200,11 +200,28 @@ export default function Administrador() {
     setter((prev) => ({ ...prev, [key]: e.target.value }));
 
   // Product handlers
-  const handleRegistrarProducto = () => {
+  const handleRegistrarProducto = async () => {
+
+  if (!product.imageProduct) {
+      alert("Por favor, selecciona una imagen para el producto.");
+      return;
+    }
+
+  const formData = new FormData();
+
+  const { imageProduct, ...dtoProductAdmin } = product;
+
+  const productBlob = new Blob([JSON.stringify(dtoProductAdmin)], {
+    type: 'application/json'
+  });
+  
+  formData.append('product', productBlob);
+  formData.append('image', imageProduct);
+
     fetch(`${API_PRODUCTS}/saveProduct`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
+      body: formData,
+      credentials: "include",
     })
       .then(res => {
         if (res.ok) {
@@ -220,8 +237,10 @@ export default function Administrador() {
   const handleActualizarProducto = () => {
     fetch(`${API_PRODUCTS}/editProduct/${updateProduct.productName}`, {
       method: "PUT",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updateProduct),
+      
     })
       .then(res => {
         if (res.ok) {
@@ -260,6 +279,7 @@ export default function Administrador() {
   const handleRegistrarUsuario = () => {
     fetch(API_USER_REGISTER, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     })
@@ -367,7 +387,6 @@ export default function Administrador() {
             ))}
           </div>
 
-          {/* Registrar Producto */}
           {activeTab === "registrar" && (
             <div>
               <div className="product-grid">
@@ -383,7 +402,7 @@ export default function Administrador() {
                 <ImageUpload
                   label="Imagen del producto"
                   value={product.imageProduct}
-                  onChange={(base64) => setProduct(prev => ({ ...prev, imageProduct: base64 }))}
+                  onChange={(file) => setProduct(prev => ({ ...prev, imageProduct: file }))}
                   full
                 />
               </div>
@@ -409,7 +428,7 @@ export default function Administrador() {
                 <ImageUpload
                   label="Nueva imagen del producto"
                   value={updateProduct.imageProduct}
-                  onChange={(base64) => setUpdateProduct(prev => ({ ...prev, imageProduct: base64 }))}
+                  onChange={(file) => setUpdateProduct(prev => ({ ...prev, imageProduct: file }))}
                   full
                 />
               </div>

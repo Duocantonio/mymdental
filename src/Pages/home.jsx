@@ -58,11 +58,4 @@ export default function Home() {
     </>
     );
 
-
-
-
-
-
-
-
 }
