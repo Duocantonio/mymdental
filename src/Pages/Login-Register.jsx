@@ -20,6 +20,8 @@ export default function LoginRegister() {
   const [telefono, setTelefono] = useState("");
   const [error, setError] = useState(null);
 
+
+
   const toggleModo = (nuevoModo) => {
     if (nuevoModo === modo || animClass) return;
     const slideOut = modo === "login" ? "slide-out-left" : "slide-out-right";
@@ -133,7 +135,7 @@ export default function LoginRegister() {
           emailUser: email,
           passwordUser: password,
           cellphoneUser: telefono,
-          role: "CLIENT",
+          role: "CLIENT"
         }),
       });
       if (!response.ok) throw new Error("Error al registrar");

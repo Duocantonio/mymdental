@@ -474,14 +474,18 @@ export default function Administrador() {
                 <Field label="Nuevo stock crítico" type="number" value={updateProduct.criticProduct} onChange={pu("criticProduct")} placeholder="0" />
                 <Field label="Nueva descripción" type="textarea" value={updateProduct.descriptionProduct} onChange={pu("descriptionProduct")} placeholder="Nueva descripción..." full />
                 <div className="field-container field-full-width">
-                  <label className="field-label">Nueva imagen del producto</label>
-                  <input type="file" accept="image/*" className="field-input" onChange={handleImageChange(setUpdateProduct)} />
-                  {updateProduct.imageProduct && (
-                    <div className="image-preview-container">
-                      <img src={updateProduct.imageProduct} alt="Vista previa" className="image-preview" />
-                    </div>
-                  )}
-                </div>
+                  <ImageUpload
+                    label="Nueva imagen del producto"
+                    value={updateProduct.imageProduct}
+                    onChange={(base64) =>
+                      setUpdateProduct(prev => ({
+                        ...prev,
+                        imageProduct: base64
+                      }))
+                    }
+                    full
+                />
+              </div>
               </div>
               <div className="button-container">
                 <PrimaryButton onClick={handleActualizarProducto}>Actualizar producto</PrimaryButton>

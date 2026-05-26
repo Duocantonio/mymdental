@@ -6,6 +6,7 @@ const API_DEPARTMENTS = import.meta.env.VITE_API_DEPARTMENTS;
 const API_USERS = import.meta.env.VITE_API_GetUsers;
 const API_USER_REGISTER = import.meta.env.VITE_API_USER_REGISTER;
 const API_UPDATE_USER = import.meta.env.VITE_API_UPDATE_USER;
+const API_DELETE_USER = import.meta.env.VITE_API_DELETE_USER;
 
 const INITIAL_PRODUCT = {
   codeProduct: "",
@@ -17,6 +18,7 @@ const INITIAL_PRODUCT = {
   descriptionProduct: "",
   nameDepartment: "",
   imageProduct: "",
+  activeProduct: true,
 };
 
 const INITIAL_USER = {
@@ -27,6 +29,7 @@ const INITIAL_USER = {
   cellphoneUser: "",
   role: "CLIENT",
 };
+
 
 const ROLES = ["CLIENT", "ADMINISTRATOR", "WORKER"];
 
@@ -200,44 +203,123 @@ export default function Administrador() {
     setter((prev) => ({ ...prev, [key]: e.target.value }));
 
   // Product handlers
-  const handleRegistrarProducto = () => {
-    fetch(`${API_PRODUCTS}/saveProduct`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
-    })
-      .then(res => {
-        if (res.ok) {
-          showFeedback("Producto registrado exitosamente", "success");
-          setProduct({ ...INITIAL_PRODUCT });
-        } else {
-          showFeedback("Error al registrar el producto", "error");
-        }
-      })
-      .catch(() => showFeedback("Error de conexión con el servidor", "error"));
+  const handleRegistrarProducto = async () => {
+    if (!product.imageProduct) {
+      alert("Por favor, selecciona una imagen para el producto.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      const { imageProduct, ...dtoProductAdmin } = product;
+
+      const productBlob = new Blob([JSON.stringify(dtoProductAdmin)], {
+        type: 'application/json'
+      });
+      formData.append('product', productBlob);
+
+      const response = await fetch(imageProduct);
+      const imageBlob = await response.blob();
+      
+      formData.append('image', imageBlob, 'imagen_producto.jpg');
+
+      const res = await fetch(`${API_PRODUCTS}/saveProduct`, {
+        method: "POST",
+        body: formData,
+        credentials: "include", 
+      });
+
+
+      const text = await res.text();
+
+      console.log("STATUS:", res.status);
+      console.log("RESPUESTA:", text);
+
+      if (res.ok) {
+        showFeedback("Producto registrado exitosamente", "success");
+        setProduct({ ...INITIAL_PRODUCT });
+      } else {
+        showFeedback("Error al registrar el producto", "error");
+      }
+    } catch (error) {
+      console.error(error);
+      showFeedback("Error de conexión con el servidor", "error");
+    }
   };
 
-  const handleActualizarProducto = () => {
-    fetch(`${API_PRODUCTS}/editProduct/${updateProduct.productName}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateProduct),
-    })
-      .then(res => {
-        if (res.ok) {
-          showFeedback("Producto actualizado exitosamente", "success");
-          setUpdateProduct({ ...INITIAL_PRODUCT });
-          fetchProductList();
-        } else {
-          showFeedback("Error al actualizar el producto", "error");
-        }
-      })
-      .catch(() => showFeedback("Error de conexión con el servidor", "error"));
-  };
+const handleActualizarProducto = async () => {
+  try {
+
+    const formData = new FormData();
+
+    const { imageProduct, ...dtoProductAdmin } = updateProduct;
+
+    const productBlob = new Blob(
+      [JSON.stringify(dtoProductAdmin)],
+      {
+        type: "application/json"
+      }
+    );
+
+    formData.append("product", productBlob);
+
+    if (imageProduct) {
+      const response = await fetch(imageProduct);
+      const imageBlob = await response.blob();
+      formData.append(
+        "image",
+        imageBlob,
+        "imagen_producto.jpg"
+      );
+    }
+
+    const res = await fetch(
+      `${API_PRODUCTS}/editProduct/${updateProduct.productName}`,
+      {
+        method: "PUT",
+        body: formData,
+        credentials: "include"
+      }
+    );
+
+    const text = await res.text();
+
+    console.log("STATUS:", res.status);
+    console.log("RESPUESTA:", text);
+
+    if (res.ok) {
+      showFeedback(
+        "Producto actualizado exitosamente",
+        "success"
+      );
+
+      setUpdateProduct({
+        ...INITIAL_PRODUCT
+      });
+
+      fetchProductList();
+
+    } else {
+      showFeedback(
+        "Error al actualizar el producto",
+        "error"
+      );
+    }
+
+  } catch(error) {
+
+    console.error(error);
+
+    showFeedback(
+      "Error de conexión con el servidor",
+      "error"
+    );
+  }
+};
 
   const handleEliminarProducto = () => {
     if (!deleteProductName) return showFeedback("Ingresa el nombre del producto.", "error");
-    fetch(`${API_PRODUCTS}/deleteProduct/${deleteProductName}`, { method: "DELETE" })
+    fetch(`${API_PRODUCTS}/deleteProduct/${deleteProductName}`, { method: "DELETE", credentials: "include" })
       .then(res => {
         if (res.ok) {
           showFeedback("Producto eliminado exitosamente", "success");
@@ -256,11 +338,11 @@ export default function Administrador() {
       .catch(() => showFeedback("Error al cargar productos", "error"));
   };
 
-  // User handlers
   const handleRegistrarUsuario = () => {
     fetch(API_USER_REGISTER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(user),
     })
       .then(res => {
@@ -278,6 +360,7 @@ export default function Administrador() {
     fetch(`${API_UPDATE_USER}/${updateUser.emailUser}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(updateUser),
     })
       .then(res => {
@@ -293,7 +376,7 @@ export default function Administrador() {
 
   const handleEliminarUsuario = () => {
     if (!deleteUserEmail) return showFeedback("Ingresa el email del usuario.", "error");
-    fetch(`${API_DELETE_USER}/${deleteUserEmail}`, { method: "DELETE" })
+    fetch(`${API_DELETE_USER}/${deleteUserEmail}`, { method: "DELETE", credentials: "include" })
       .then(res => {
         if (res.ok) {
           showFeedback("Usuario eliminado exitosamente", "success");
@@ -379,7 +462,6 @@ export default function Administrador() {
                 <Field label="Stock crítico" type="number" value={product.criticProduct} onChange={pf("criticProduct")} placeholder="0" />
                 <Field label="Categoría" type="select" value={product.nameDepartment} onChange={pf("nameDepartment")} options={depOptions} full />
                 <Field label="Descripción" type="textarea" value={product.descriptionProduct} onChange={pf("descriptionProduct")} placeholder="Descripción..." full />
-                {/* ── IMAGE UPLOAD ── */}
                 <ImageUpload
                   label="Imagen del producto"
                   value={product.imageProduct}
