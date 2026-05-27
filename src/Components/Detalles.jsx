@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import logoImagen from '../assets/Imagenes/Logomym.png';
 
+const API_PRODUCT_BY_ID = import.meta.env.VITE_API_5;
 
 const Detalles = () => {
   const { idProduct } = useParams() 
@@ -11,7 +12,7 @@ const Detalles = () => {
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_11.replace('{id}', idProduct)}`, {
+        const response = await fetch(`${API_PRODUCT_BY_ID}/${idProduct}`, {
           method: 'GET',
           credentials: 'include'
         });
