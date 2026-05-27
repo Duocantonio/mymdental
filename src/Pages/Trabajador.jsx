@@ -3,7 +3,7 @@ import '../Styles/Administrador.css';
 
 const API_PRODUCTS = import.meta.env.VITE_API_PRODUCTS;
 const API_DEPARTMENTS = import.meta.env.VITE_API_DEPARTMENTS;
-const API_USERS = import.meta.env.VITE_API_7;
+const API_USERS = import.meta.env.VITE_API_GetUsers;
 const API_USER_REGISTER = import.meta.env.VITE_API_USER_REGISTER;
 
 const INITIAL_PRODUCT = {

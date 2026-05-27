@@ -11,7 +11,10 @@ const Detalles = () => {
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/MyMDentalCommerce/products/getProduct/${idProduct}`) 
+        const response = await fetch(`${import.meta.env.VITE_API_11.replace('{id}', idProduct)}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
         if (!response.ok){
           throw new Error("Error al cargar los detalles, tamo trabajando pa esto we ;(")
         }

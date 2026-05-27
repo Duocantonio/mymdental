@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../Styles/EditarDatos.css';
 
 const API_9 = import.meta.env.VITE_API_9;   
 const API_10 = import.meta.env.VITE_API_10; 
@@ -59,31 +60,29 @@ export default function EditarDatos() {
         }
     }
 
-    return (
-        <>
-            <div>Editar Datos</div>
+   return (
+    <>
+  <div className="container">
+    <h1 className="title">Editar Datos</h1>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Nombre"
-                    value={nameUser}
-                    onChange={(e) => setNameUser(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Apellido"
-                    value={surnameUser}
-                    onChange={(e) => setSurnameUser(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Celular"
-                    value={cellphoneUser}
-                    onChange={(e) => setCellphoneUser(e.target.value)}
-                />
-                <button type="submit">Guardar Cambios</button>
-            </form>
-        </>
-    );
-}
+    <form className="editar-card" onSubmit={handleSubmit}>
+      <div className="editar-field">
+        <label>Nombre</label>
+        <input type="text" placeholder="Tu nombre"
+          value={nameUser} onChange={(e) => setNameUser(e.target.value)} />
+      </div>
+      <div className="editar-field">
+        <label>Apellido</label>
+        <input type="text" placeholder="Tu apellido"
+          value={surnameUser} onChange={(e) => setSurnameUser(e.target.value)} />
+      </div>
+      <div className="editar-field">
+        <label>Celular</label>
+        <input type="text" placeholder="+56 9 xxxx xxxx"
+          value={cellphoneUser} onChange={(e) => setCellphoneUser(e.target.value)} />
+      </div>
+      <button type="submit">Guardar Cambios</button>
+    </form>
+  </div>
+    </>
+)};
